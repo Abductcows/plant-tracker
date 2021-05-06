@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="plant_name">Plant name</string>
+    <string name="next_watering">Next Watering: XX/XX/20XX</string>
+    <string name="age">Age: XX days/months</string>
+    <string name="plant_img_description">Plant image</string>
+    <string name="img_button_description">an image button</string>
 </resources>
