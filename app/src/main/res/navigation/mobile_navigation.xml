@@ -9,19 +9,23 @@
         android:id="@+id/nav_home"
         android:name="gr.auth.androidproject.plants.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_add_new"
+            app:destination="@id/nav_add_new" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_add_new"
-        android:name="gr.auth.androidproject.plants.ui.gallery.GalleryFragment"
+        android:name="gr.auth.androidproject.plants.ui.add_new.AddNewFragment"
         android:label="@string/menu_add_new"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_add_new" />
 
     <fragment
         android:id="@+id/nav_watering_cal"
-        android:name="gr.auth.androidproject.plants.ui.slideshow.SlideshowFragment"
+        android:name="gr.auth.androidproject.plants.ui.watering_calendar.WateringCalendarFragment"
         android:label="@string/menu_watering_calendar"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_water_calendar" />
     <fragment
         android:id="@+id/nav_about"
         android:name="gr.auth.androidproject.plants.ui.about.AboutFragment"
@@ -32,4 +36,12 @@
         android:name="gr.auth.androidproject.plants.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <action
+        android:id="@+id/action_global_nav_settings"
+        app:destination="@id/nav_settings" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="gr.auth.androidproject.plants.ui.details.DetailsFragment"
+        android:label="details_fragment"
+        tools:layout="@layout/fragment_details" />
 </navigation>

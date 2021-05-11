@@ -48,7 +48,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/plant_name"
-                        android:textAlignment="center"
                         android:textSize="16sp" />
 
                     <TextView
@@ -94,7 +93,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/plant_name"
-                        android:textAlignment="center"
                         android:textSize="16sp" />
 
                     <TextView
@@ -140,7 +138,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/plant_name"
-                        android:textAlignment="center"
                         android:textSize="16sp" />
 
                     <TextView
@@ -160,16 +157,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add"
+        android:clickable="true"
+        android:contentDescription="@string/floating_button_home_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9"
-        android:contentDescription="@string/img_button_description" />
+        tools:src="@drawable/ic_add"
+        android:focusable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>
