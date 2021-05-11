@@ -21,4 +21,6 @@
     <string name="menu_about">About</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="floating_button_home_description">button to add new plant</string>
+    <string name="search_plant">Search Plant:</string>
 </resources>
