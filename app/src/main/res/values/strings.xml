@@ -23,4 +23,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
+    <string name="string_about">This is a project created by Giorgos Bouroutzoglou, Giorgos Michail
+    and Dimitrios Dimos.</string>
 </resources>
