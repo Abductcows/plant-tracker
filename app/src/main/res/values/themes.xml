@@ -18,6 +18,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    
+    <style name="Button.red" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/color_delete</item>
+    </style>
 
     <style name="Theme.PlantTracker.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
