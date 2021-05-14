@@ -34,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/plant_img_description"
+                    android:contentDescription="@string/img_description"
                     tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/plant_img_description"
+                    android:contentDescription="@string/img_description"
                     tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/plant_img_description"
+                    android:contentDescription="@string/img_description"
                     tools:src="@tools:sample/avatars" />
 
                 <LinearLayout
