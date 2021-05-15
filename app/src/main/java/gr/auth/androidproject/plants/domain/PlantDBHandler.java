@@ -221,7 +221,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
 
                     current.setId(cursor.getLong(COLUMN_ID.index)); // ID
                     current.setName(cursor.getString(COLUMN_ID.index)); // NAME
-                    if (Objects.nonNull(cursor.getString(COLUMN_BIRTHDAY.index))) { // BIRTHDAY
+                    if (!cursor.getString(COLUMN_BIRTHDAY.index).equals("NULL")) { // BIRTHDAY
                         current.setBirthday(
                                 LocalDateTime.parse(cursor.getString(COLUMN_BIRTHDAY.index))
                         );
