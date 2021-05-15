@@ -121,7 +121,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      */
     public List<Plant> getAllPlants() {
         String query = "SELECT * " +
-                "FROM TABLE " + TABLE_PLANTS;
+                "FROM " + TABLE_PLANTS;
 
         return getPlants(query);
     }
@@ -134,7 +134,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      */
     public Optional<Plant> getPlantById(long id) {
         String query = "SELECT *\n" +
-                "FROM TABLE " + TABLE_PLANTS + "\n" +
+                "FROM " + TABLE_PLANTS + "\n" +
                 "WHERE _id = " + id + "\n";
 
         List<Plant> result = getPlants(query);
