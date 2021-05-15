@@ -23,4 +23,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
+
+    <string name="add_plant_save_button_label">Save</string>
+    <string name="add_plant_title">Add a new plant 🍃</string>
+    <string name="add_plant_editText_name">Name</string>
+    <string name="add_plant_editText_birthday">Birthday (optional)</string>
+    <string name="add_plant_camera_button_content_description">Opens the camera to take a photo of your plant</string>
+    <string name="add_plant_photo_preview_content_description">Photo (optional)</string>
+    <string name="add_plant_interval_days">Days</string>
+    <string name="add_plant_interval_hours">Hours</string>
+    <string name="add_plant_interval_minutes">Minutes</string>
+    <string name="add_plant_watering_interval_label">Water every:</string>
+    <string name="duration_formatter_hours">\"hours\"</string>
+    <string name="duration_formatter_days">days</string>
+    <string name="duration_formatter_minutes">minutes</string>
 </resources>
