@@ -1,38 +1,53 @@
 package gr.auth.androidproject.plants.ui.add_new;
 
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Calendar;
+import java.util.Objects;
 
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
 import gr.auth.androidproject.plants.domain.PlantDBHandler;
+import gr.auth.androidproject.plants.domain.PlantFormatter;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AddNewFragment extends Fragment {
 
     private AddNewViewModel addNewViewModel;
+    private FloatingActionButton takePhotoButton;
+    ImageView photoPreview;
     private EditText nameInput;
     private EditText birthdayInput;
     private EditText wateringIntervalDays, wateringIntervalHours, wateringIntervalMinutes;
     private Button createPlantButton;
 
+    Bitmap photoBitmap = null;
     private LocalDateTime birthday = null;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 
@@ -43,10 +58,17 @@ public class AddNewFragment extends Fragment {
 
 
         View root = saveViews(inflater, container);
+        createTakePhotoButtonListener();
         createBirthdayInputListener();
         createSavePlantButtonListener();
 
         return root;
+    }
+
+    private void createTakePhotoButtonListener() {
+        takePhotoButton.setOnClickListener(
+                v -> this.dispatchTakePictureIntent()
+        );
     }
 
     /**
@@ -57,6 +79,8 @@ public class AddNewFragment extends Fragment {
     @NotNull
     private View saveViews(@NonNull LayoutInflater inflater, ViewGroup container) {
         View root = inflater.inflate(R.layout.fragment_add_new, container, false);
+        takePhotoButton = root.findViewById(R.id.buttonTakePlantPhoto);
+        photoPreview = root.findViewById(R.id.plantPhotoPreview);
         nameInput = root.findViewById(R.id.editTextPlantName);
         birthdayInput = root.findViewById(R.id.editTextPlantBirthday);
         wateringIntervalDays = root.findViewById(R.id.editTextWateringIntervalDays);
@@ -137,7 +161,14 @@ public class AddNewFragment extends Fragment {
             // but it may be too cluttered then
             LocalDateTime lastWatered = LocalDateTime.now();
 
-            byte[] photo = null; // TODO add photo processing
+            byte[] photo = null;
+            if (Objects.nonNull(photoBitmap)) {
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                photoBitmap.compress(
+                        PlantFormatter.BitmapEncoding.format,
+                        PlantFormatter.BitmapEncoding.quality, bytes);
+                photo = bytes.toByteArray();
+            }
 
             // create the plant object
             Plant theNewPlant = new Plant(name, birthday, lastWatered, wateringInterval, photo);
@@ -146,5 +177,32 @@ public class AddNewFragment extends Fragment {
             PlantDBHandler handler = new PlantDBHandler(AddNewFragment.this.getActivity());
             handler.addPlant(theNewPlant);
         });
+    }
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // display newly capture plant photo
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photoBitmap = imageBitmap;
+            photoPreview.setImageBitmap(imageBitmap);
+            photoPreview.setVisibility(View.VISIBLE);
+
+            // hide the button and caption
+            takePhotoButton.setVisibility(View.INVISIBLE);
+            this.getActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
+        }
     }
 }
