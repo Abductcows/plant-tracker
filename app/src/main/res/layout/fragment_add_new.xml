@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:ems="10"
             android:hint="@string/add_plant_editText_name"
             android:importantForAutofill="no"
@@ -108,7 +108,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/add_plant_save_button_label"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +122,7 @@
             android:id="@+id/wateringInterval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:text="@string/add_plant_watering_interval_label"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/editTextPlantBirthday"
@@ -143,25 +143,6 @@
             android:inputType="date"
             app:layout_constraintStart_toStartOf="@+id/editTextPlantName"
             app:layout_constraintTop_toBottomOf="@+id/editTextPlantName" />
-
-        <Button
-            android:id="@+id/debugDbButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="debug DB"
-            app:layout_constraintStart_toStartOf="@+id/addPlantButton"
-            app:layout_constraintTop_toBottomOf="@+id/editTextWateringIntervalMinutes" />
-
-        <TextView
-            android:id="@+id/dbDebugTextOut"
-            android:layout_width="145dp"
-            android:layout_height="33dp"
-            android:gravity="center_vertical"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/debugDbButton"
-            app:layout_constraintStart_toEndOf="@+id/debugDbButton"
-            app:layout_constraintTop_toTopOf="@+id/debugDbButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
