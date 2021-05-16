@@ -55,13 +55,8 @@ public class AddNewFragment extends Fragment {
 
 
         View root = saveViews(inflater, container);
-        createBirthdayListener();
-        createSavePlantListener();
-
-        // temp
-        debugDBButton = root.findViewById(R.id.debugDbButton);
-        debugOutput = root.findViewById(R.id.dbDebugTextOut);
-        setTempDBDebugListener();
+        createBirthdayInputListener();
+        createSavePlantButtonListener();
 
         return root;
     }
@@ -86,7 +81,7 @@ public class AddNewFragment extends Fragment {
     /**
      * Special treatment for the DatePicker used in the birthday selection
      */
-    private void createBirthdayListener() {
+    private void createBirthdayInputListener() {
         final Calendar cal = Calendar.getInstance();
 
         DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
@@ -111,7 +106,7 @@ public class AddNewFragment extends Fragment {
      * the database through the {@link PlantDBHandler} object
      * </p>
      */
-    private void createSavePlantListener() {
+    private void createSavePlantButtonListener() {
 
         createPlantButton.setOnClickListener(v -> {
             // check for name (required)
