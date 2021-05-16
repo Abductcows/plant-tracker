@@ -135,6 +135,14 @@ public class PlantFormatter {
         return builder.toString();
     }
 
+    /**
+     * Helper class that declares plant bitmap encoding format/quality
+     */
+    public static class BitmapEncoding {
+        public static final Bitmap.CompressFormat format = Bitmap.CompressFormat.PNG;
+        public static final int quality = 100;
+    }
+
     @NonNull
     @Override
     public String toString() {
