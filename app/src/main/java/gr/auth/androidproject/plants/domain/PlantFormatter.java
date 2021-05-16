@@ -68,7 +68,7 @@ public class PlantFormatter {
         return formattedDuration(plant.getWateringInterval());
     }
 
-    public Optional<Bitmap> getPhoto() {
+    public Optional<Bitmap> photo() {
         if (plant.getPhoto().isPresent()) {
             byte[] blob = plant.getPhoto().get();
             return Optional.of(
@@ -162,7 +162,7 @@ public class PlantFormatter {
 
 
         builder.append(", has_photo = ");
-        builder.append(getPhoto().isPresent());
+        builder.append(photo().isPresent());
 
         return builder.toString();
     }
