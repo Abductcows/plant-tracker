@@ -1,16 +1,12 @@
 package gr.auth.androidproject.plants.ui.add_new;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,20 +16,14 @@ import androidx.lifecycle.ViewModelProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
 import gr.auth.androidproject.plants.domain.PlantDBHandler;
-import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 public class AddNewFragment extends Fragment {
 
@@ -84,9 +74,9 @@ public class AddNewFragment extends Fragment {
 
         DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
             // update label
-            LocalDate birthday = LocalDate.of(year, month + 1, dayOfMonth);
+            birthday = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0);
 
-            birthdayInput.setHint(
+            birthdayInput.setText(
                     birthday.format(dateFormatter));
         };
 
@@ -129,23 +119,18 @@ public class AddNewFragment extends Fragment {
                 int durationInMinutes = 0;
                 try {
                     if (!dayString.isEmpty()) {
-                        durationInMinutes += 1440 * Integer.parseInt(dayString);
+                        durationInMinutes += 1440 * Integer.parseUnsignedInt(dayString);
                     }
                     if (!hourString.isEmpty()) {
-                        durationInMinutes += 60 * Integer.parseInt(hourString);
+                        durationInMinutes += 60 * Integer.parseUnsignedInt(hourString);
                     }
                     if (!minuteString.isEmpty()) {
-                        durationInMinutes += Integer.parseInt(minuteString);
+                        durationInMinutes += Integer.parseUnsignedInt(minuteString);
                     }
                 } catch (NumberFormatException e) {
                     Toast.makeText(AddNewFragment.this.getActivity(), "Invalid watering interval format", Toast.LENGTH_SHORT).show();
                 }
                 wateringInterval = Duration.ofMinutes(durationInMinutes);
-            }
-
-            LocalDateTime birthday = null;
-            if (birthdayInput.getText().length() > 0) {
-                LocalDateTime.parse(birthdayInput.getHint(), dateFormatter);
             }
 
             // TODO maybe add option to set initial last watered time
