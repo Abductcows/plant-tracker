@@ -43,9 +43,7 @@ public class AddNewFragment extends Fragment {
     private EditText wateringIntervalDays, wateringIntervalHours, wateringIntervalMinutes;
     private Button createPlantButton;
 
-    private Button debugDBButton;
-    private TextView debugOutput;
-
+    private LocalDateTime birthday = null;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -156,26 +154,12 @@ public class AddNewFragment extends Fragment {
 
             byte[] photo = null; // TODO add photo processing
 
+            // create the plant object
             Plant theNewPlant = new Plant(name, birthday, lastWatered, wateringInterval, photo);
+
+            // insert into the db
             PlantDBHandler handler = new PlantDBHandler(AddNewFragment.this.getActivity());
-            System.out.println("ADDING TO THE DB");
-            Toast.makeText(AddNewFragment.this.getActivity(), "WOAH, it's working", Toast.LENGTH_SHORT).show();
             handler.addPlant(theNewPlant);
         });
     }
-
-    @SuppressLint("SetTextI18n")
-    void setTempDBDebugListener() {
-        debugDBButton.setOnClickListener(v -> {
-            List<PlantFormatter> dbPlants =
-                    new PlantDBHandler(AddNewFragment.this.getActivity())
-                            .getAllPlants()
-                            .stream()
-                            .map(PlantFormatter::new)
-                            .collect(Collectors.toCollection(ArrayList::new));
-
-            dbPlants.forEach(plant -> debugOutput.setText(debugOutput.getText() + plant.toString()));
-        });
-    }
-
 }
