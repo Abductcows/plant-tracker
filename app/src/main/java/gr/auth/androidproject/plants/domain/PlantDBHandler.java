@@ -232,8 +232,9 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     current.setLastWatered(
                             LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
                     );
-                    if (Objects.nonNull(cursor.getBlob(COLUMN_PHOTO.index))) { // PHOTO
-                        current.setPhoto(cursor.getBlob(COLUMN_PHOTO.index));
+                    byte[] compressedImageBytes = cursor.getBlob(COLUMN_PHOTO.index);
+                    if (Objects.nonNull(compressedImageBytes)) { // PHOTO
+                        current.setPhoto(compressedImageBytes);
                     }
                 }
                 return result;
