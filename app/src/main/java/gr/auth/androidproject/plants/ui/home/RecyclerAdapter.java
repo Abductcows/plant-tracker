@@ -22,7 +22,7 @@ import gr.auth.androidproject.plants.domain.Plant;
 import gr.auth.androidproject.plants.domain.PlantDBHandler;
 import gr.auth.androidproject.plants.domain.PlantFormatter;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private PlantFormatter plantFormatter;
     private PlantDBHandler plantDBHandler;
@@ -40,7 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background };
 
     // RecyclerAdapter constructor to pass the context
-    public RecyclerAdapter(Context context){
+    public RecyclerAdapter(Context context) {
         LocalDateTime birthday = null;
         LocalDateTime water = null;
         Duration duration = null;
@@ -51,7 +51,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     // Class that holds the items to be displayed (Views in card_layout)
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView plantName;
         private TextView age;
         private TextView nextWatering;
