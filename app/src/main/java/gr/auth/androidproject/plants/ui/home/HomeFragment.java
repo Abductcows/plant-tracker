@@ -1,5 +1,6 @@
 package gr.auth.androidproject.plants.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -29,6 +32,16 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Context context = getContext();
+        // get the reference of RecyclerView
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+
+        // set a LinearLayoutManager with default orientation
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+
+        // set LayoutManager to RecyclerView
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         // setting the floating action button to go to add new page when pressed
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
