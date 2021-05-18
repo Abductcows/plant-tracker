@@ -1,5 +1,6 @@
 package gr.auth.androidproject.plants.domain;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -9,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Objects;
 import java.util.Optional;
 
 import gr.auth.androidproject.plants.R;
@@ -28,13 +30,18 @@ public class PlantFormatter {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofLocalizedDate(FormatStyle.SHORT); // 5/14/21
 
+    private final Context context;
     /**
      * The {@link Plant} object being wrapped
      */
     private final Plant plant;
 
-
     public PlantFormatter(Plant plant) {
+        this(null, plant);
+    }
+
+    public PlantFormatter(Context context, Plant plant) {
+        this.context = context;
         this.plant = plant;
     }
 
@@ -48,7 +55,11 @@ public class PlantFormatter {
         Duration timeToNext = PlantUtils.timeToNextWatering(plant);
 
         if (timeToNext.isNegative() || timeToNext.isZero()) {
-            return "WATER NOW"; // TODO add resource
+            if (Objects.nonNull(context)) {
+                return context.getResources().getString(R.string.formatter_water_now_message);
+            } else {
+                return "0";
+            }
         }
 
         return formattedDuration(timeToNext);

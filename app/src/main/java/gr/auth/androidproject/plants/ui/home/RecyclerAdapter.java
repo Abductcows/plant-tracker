@@ -1,7 +1,6 @@
 package gr.auth.androidproject.plants.ui.home;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import gr.auth.androidproject.plants.domain.PlantDBHandler;
 import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
-
+    private Context context;
     private PlantFormatter plantFormatter;
     private PlantDBHandler plantDBHandler;
     private List<Plant> plants;
@@ -41,6 +40,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     // RecyclerAdapter constructor to pass the context
     public RecyclerAdapter(Context context){
+        this.context = context;
         LocalDateTime birthday = null;
         LocalDateTime water = null;
         Duration duration = null;
@@ -88,7 +88,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
-        plantFormatter = new PlantFormatter(plants.get(position));
+        plantFormatter = new PlantFormatter(context, plants.get(position));
         holder.plantName.setText(plantFormatter.name());
         if (plantFormatter.photo().isPresent())
             holder.plantImage.setImageBitmap(plantFormatter.photo().get());
