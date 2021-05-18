@@ -101,7 +101,7 @@ public class PlantFormatter {
     }
 
     private String formattedDateTime(LocalDateTime dateTime) {
-        return dateTime.toLocalDate().format(DATE_TIME_FORMATTER);
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 
     private String formattedDate(LocalDateTime date) {
