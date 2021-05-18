@@ -45,7 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         Plant placeHolder = new Plant(
                 "Gyros",
-                LocalDateTime.of(1922, 1, 0, 0, 0),
+                LocalDateTime.of(1922, 1, 1, 0, 0),
                 LocalDateTime.now(),
                 Duration.ofDays(1),
                 null
