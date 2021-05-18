@@ -1,7 +1,6 @@
 package gr.auth.androidproject.plants.ui.home;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private PlantFormatter plantFormatter;
     private List<Plant> plants;
     //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
 //            "Chapter Six", "Chapter Seven", "Chapter Eight"};
@@ -89,14 +87,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
-        plantFormatter = new PlantFormatter(plants.get(position));
-        holder.plantName.setText(plantFormatter.name());
-        if (plantFormatter.photo().isPresent())
-            holder.plantImage.setImageBitmap(plantFormatter.photo().get());
-        if (plantFormatter.birthday().isPresent())
-            holder.age.setText(plantFormatter.birthday().get());
-        holder.nextWatering.setText(plantFormatter.timeToNextWatering());
-
+        PlantFormatter plant = new PlantFormatter(plants.get(position));
+        holder.plantName.setText(plant.name());
+        if (plant.photo().isPresent())
+            holder.plantImage.setImageBitmap(plant.photo().get());
+        if (plant.birthday().isPresent())
+            holder.age.setText(plant.birthday().get());
+        holder.nextWatering.setText(plant.timeToNextWatering());
 
 //        holder.plantName.setText(titles[position]);
 //        holder.plantImage.setImageResource(images[position]);
