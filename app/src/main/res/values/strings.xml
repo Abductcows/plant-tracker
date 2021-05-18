@@ -1,55 +1,41 @@
 <resources>
-    <!-- Navigation Drawer   -->
     <string name="app_name">Plant Tracker</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Plant Tracker</string>
-    <string name="nav_header_subtitle">…for your plants!</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    
+
     <!-- Menu Strings -->
     <string name="menu_home">Home</string>
     <string name="menu_add_new">Add new</string>
-    <string name="menu_watering_calendar">Watering Calendar</string>
+    <string name="menu_watering_calendar">Watering Calender</string>
+
+    <string name="plant_name">Plant name</string>
+    <string name="next_watering">Next Watering: XX/XX/20XX</string>
+    <string name="age">Age: XX days/months</string>
+    <string name="plant_img_description">Plant image</string>
+    <string name="img_button_description">an image button</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
-
-    <!-- array for spinner items in add new -->
-    <string-array name="spinnerItems">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-    </string-array>
-
-    <!-- TODO implement these with information from database -->
-    <string name="name">name</string>
-    <string name="date_format1">XX/XX/20XX</string>
-    <string name="date_format2">XX day(s)/month(s)</string>
-    <string name="date_format3">XX day(s)</string>
-    <string name="add_note_hint">add note</string>
-
-    <!-- View Strings -->
-    <string name="plant_name">Plant name: </string>
-    <string name="next_watering">Next Watering: </string>
-    <string name="age">Age: </string>
-    <string name="notes">Notes: </string>
-    <string name="img_button_description">an image button</string>
-    <string name="img_description">a plant image</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
-    <string name="string_about">This is a project created by Giorgos Bouroutzoglou, Giorgos Michail and Dimitrios Dimos.</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_watered">Just watered</string>
-    <string name="date_planted">Date planted: </string>
-    <string name="water_every">Water every: </string>
-    <string name="days">days</string>
-    <string name="submit">Submit</string>
 
-
+    <string name="add_plant_save_button_label">Save</string>
+    <string name="add_plant_title">Add a new plant 🍃</string>
+    <string name="add_plant_editText_name">Name</string>
+    <string name="add_plant_editText_birthday">Birthday (optional)</string>
+    <string name="add_plant_camera_button_content_description">Opens the camera to take a photo of your plant</string>
+    <string name="add_plant_photo_preview_content_description">Photo (optional)</string>
+    <string name="add_plant_interval_days">Days</string>
+    <string name="add_plant_interval_hours">Hours</string>
+    <string name="add_plant_interval_minutes">Minutes</string>
+    <string name="add_plant_watering_interval_label">Water every:</string>
+    <string name="duration_formatter_hours">\"hours\"</string>
+    <string name="duration_formatter_days">days</string>
+    <string name="duration_formatter_minutes">minutes</string>
+    <string name="add_plant_photo_preview_description">Preview of the plant\'s photo taken</string>
 </resources>
