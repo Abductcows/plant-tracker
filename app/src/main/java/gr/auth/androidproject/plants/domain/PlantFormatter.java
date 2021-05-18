@@ -38,9 +38,20 @@ public class PlantFormatter {
         this.plant = plant;
     }
 
+    /**
+     * Checks if time elapsed between now and last watering is greater than the watering interval
+     * and returns the appropriate message
+     *
+     * @return string message informing the user of when to water the plant
+     */
     public String timeToNextWatering() {
-        return formattedDuration(
-                Duration.between(LocalDateTime.now(), plant.getLastWatered()));
+        Duration timeToNext = PlantUtils.timeToNextWatering(plant);
+
+        if (timeToNext.isNegative() || timeToNext.isZero()) {
+            return "WATER NOW"; // TODO add resource
+        }
+
+        return formattedDuration(timeToNext);
     }
 
     public long id() {
