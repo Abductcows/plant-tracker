@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import gr.auth.androidproject.plants.R;
@@ -25,7 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private PlantFormatter plantFormatter;
     private PlantDBHandler plantDBHandler;
     private List<Plant> plants;
-
+    private Plant placeHolder;
 //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
 //            "Chapter Six", "Chapter Seven", "Chapter Eight"};
 //    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -39,8 +41,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     // RecyclerAdapter constructor to pass the context
     public RecyclerAdapter(Context context){
+        LocalDateTime birthday = null;
+        LocalDateTime water = null;
+        Duration duration = null;
+        placeHolder = new Plant();
         plantDBHandler = new PlantDBHandler(context);
         plants = plantDBHandler.getAllPlants();
+        plants.add(placeHolder);
     }
 
     // Class that holds the items to be displayed (Views in card_layout)
