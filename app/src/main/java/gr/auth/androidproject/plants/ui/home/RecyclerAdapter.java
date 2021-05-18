@@ -25,8 +25,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context context;
     private PlantFormatter plantFormatter;
     private List<Plant> plants;
-    private Plant placeHolder;
-//    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
+    //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
 //            "Chapter Six", "Chapter Seven", "Chapter Eight"};
 //    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
 //    private String[] details = {"Item one details", "Item two details", "Item three details", "Item four details",
@@ -43,9 +42,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LocalDateTime birthday = null;
         LocalDateTime water = null;
         Duration duration = null;
-        placeHolder = new Plant();
         PlantDBHandler plantDBHandler = new PlantDBHandler(context);
         plants = plantDBHandler.getAllPlants();
+
+        Plant placeHolder = new Plant(
+                "Gyros",
+                LocalDateTime.of(1922, 1, 0, 0, 0),
+                LocalDateTime.now(),
+                Duration.ofDays(1),
+                null
+        );
         plants.add(placeHolder);
     }
 
