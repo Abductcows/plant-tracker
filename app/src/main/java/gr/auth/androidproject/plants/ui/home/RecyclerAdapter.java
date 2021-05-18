@@ -25,7 +25,6 @@ import gr.auth.androidproject.plants.domain.PlantFormatter;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private PlantFormatter plantFormatter;
-    private PlantDBHandler plantDBHandler;
     private List<Plant> plants;
     private Plant placeHolder;
 //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
@@ -45,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         LocalDateTime water = null;
         Duration duration = null;
         placeHolder = new Plant();
-        plantDBHandler = new PlantDBHandler(context);
+        PlantDBHandler plantDBHandler = new PlantDBHandler(context);
         plants = plantDBHandler.getAllPlants();
         plants.add(placeHolder);
     }
@@ -66,13 +65,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             nextWatering = itemView.findViewById(R.id.item_watering_value);
 
             // what to do when an item is clicked
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    Snackbar.make(v, "Click detected on item " + position,
-                            Snackbar.LENGTH_LONG).show();
-                }
+            itemView.setOnClickListener(v -> {
+                int position = getAbsoluteAdapterPosition();
+                Snackbar.make(v, "Click detected on item " + position,
+                        Snackbar.LENGTH_LONG).show();
             });
         }
     }
@@ -82,8 +78,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.card_layout, parent, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+        return new ViewHolder(v);
     }
 
     @Override
