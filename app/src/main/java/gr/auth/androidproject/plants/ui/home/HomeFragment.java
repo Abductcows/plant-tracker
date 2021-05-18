@@ -5,15 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +21,9 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     FloatingActionButton fab;
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,17 +32,22 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         Context context = getContext();
-        // get the reference of RecyclerView
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
 
-        // set a LinearLayoutManager with default orientation
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        recyclerView = root.findViewById(R.id.recyclerView);
 
-        // set LayoutManager to RecyclerView
-        recyclerView.setLayoutManager(linearLayoutManager);
+        //Set the layout of the items in the RecyclerView
+        layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //Set my Adapter for the RecyclerView
+        adapter = new RecyclerAdapter(context);
+        recyclerView.setAdapter(adapter);
+
+
+
 
         // setting the floating action button to go to add new page when pressed
-        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
+        fab = root.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(
                 new View.OnClickListener(){
                     @Override

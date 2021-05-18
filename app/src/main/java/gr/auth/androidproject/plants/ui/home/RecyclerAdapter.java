@@ -1,33 +1,103 @@
 package gr.auth.androidproject.plants.ui.home;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
+import gr.auth.androidproject.plants.R;
+import gr.auth.androidproject.plants.domain.Plant;
+import gr.auth.androidproject.plants.domain.PlantDBHandler;
+import gr.auth.androidproject.plants.domain.PlantFormatter;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
 
-    //Class that holds the items to be displayed (Views in card_layout)
+    private PlantFormatter plantFormatter;
+    private PlantDBHandler plantDBHandler;
+    private List<Plant> plants;
+
+//    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
+//            "Chapter Six", "Chapter Seven", "Chapter Eight"};
+//    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
+//    private String[] details = {"Item one details", "Item two details", "Item three details", "Item four details",
+//            "Item file details", "Item six details", "Item seven details", "Item eight details"};
+
+//    private int[] images = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background };
+
+    // RecyclerAdapter constructor to pass the context
+    public RecyclerAdapter(Context context){
+        plantDBHandler = new PlantDBHandler(context);
+        plants = plantDBHandler.getAllPlants();
+    }
+
+    // Class that holds the items to be displayed (Views in card_layout)
     class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView plantName;
+        private TextView age;
+        private TextView nextWatering;
+        private ImageView plantImage;
+
         public ViewHolder(View itemView) {
+
             super(itemView);
+            plantName = itemView.findViewById(R.id.item_title);
+            plantImage = itemView.findViewById(R.id.item_image);
+            age = itemView.findViewById(R.id.item_age_value);
+            nextWatering = itemView.findViewById(R.id.item_watering_value);
+
+            // what to do when an item is clicked
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Snackbar.make(v, "Click detected on item " + position,
+                            Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
     @NonNull
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.card_layout, parent, false);
+        ViewHolder viewHolder = new ViewHolder(v);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+        plantFormatter = new PlantFormatter(plants.get(position));
+        holder.plantName.setText(plantFormatter.name());
+        if (plantFormatter.photo().isPresent())
+            holder.plantImage.setImageBitmap(plantFormatter.photo().get());
+        if (plantFormatter.birthday().isPresent())
+            holder.age.setText(plantFormatter.birthday().get());
+        holder.nextWatering.setText(plantFormatter.timeToNextWatering());
 
+
+//        holder.plantName.setText(titles[position]);
+//        holder.plantImage.setImageResource(images[position]);
+//        holder.age.setText(ages[position]);
+//        holder.nextWatering.setText(details[position]);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return plants.size();
     }
 }

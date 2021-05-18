@@ -10,7 +10,8 @@
     card_view:cardBackgroundColor="@color/primary"
     card_view:cardCornerRadius="12dp"
     card_view:cardElevation="3dp"
-    card_view:contentPadding="4dp">
+    card_view:contentPadding="4dp"
+    android:foreground="?selectableItemBackground">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
