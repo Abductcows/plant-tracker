@@ -17,12 +17,17 @@
     <string name="age">Age: XX days/months</string>
     <string name="plant_img_description">Plant image</string>
     <string name="img_button_description">an image button</string>
+    <string name="img_description">An image</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="date_format1">XX/XX/20XX</string>
+    <string name="date_format2">XX/xx</string>
+    <string name="date_format3">XX/XX days/months</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
+    <string name="add_note_hint">Notes:</string>
+    <string name="notes">Notes</string>
 
     <string name="add_plant_save_button_label">Save</string>
     <string name="add_plant_title">Add a new plant 🍃</string>
@@ -38,4 +43,13 @@
     <string name="duration_formatter_days">days</string>
     <string name="duration_formatter_minutes">minutes</string>
     <string name="add_plant_photo_preview_description">Preview of the plant\'s photo taken</string>
+
+    <string name="string_about">This is a project created by Giorgos Bouroutzoglou, Giorgos Michail and Dimitrios Dimos.</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_watered">Just watered</string>
+    <string name="date_planted">Date planted: </string>
+    <string name="water_every">Water every: </string>
+    <string name="days">days</string>
+    <string name="submit">Submit</string>
+    <string name="name">Name</string>
 </resources>
