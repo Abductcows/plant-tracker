@@ -7,9 +7,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/app_bar_search"
-
-            android:title="Search"
-            app:actionViewClass="android.widget.SearchView" />
+            app:actionViewClass="android.widget.SearchView"
+            android:title="@string/search_plant" />
+<!--            android:icon="@drawable/ic_baseline_search_24"-->
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
