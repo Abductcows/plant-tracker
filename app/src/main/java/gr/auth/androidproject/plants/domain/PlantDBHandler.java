@@ -189,16 +189,16 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      * @param contentValues the contentValues
      */
     private void putNonIds(Plant plant, ContentValues contentValues) {
-        contentValues.put(COLUMN_NAME.name, plant.getName());
-        contentValues.put(COLUMN_BIRTHDAY.name,
-                plant.getBirthday().isPresent() ? plant.getBirthday().get().toString() : "NULL");
+        contentValues.put(COLUMN_NAME.name, Objects.requireNonNull(plant.getName()));
         contentValues.put(COLUMN_LAST_WATERED.name, plant.getLastWatered().toString());
         contentValues.put(COLUMN_WATERING_INTERVAL.name, plant.getWateringInterval().toString());
-        // if is necessary for photo because of different types
+
+        if (plant.getBirthday().isPresent()) {
+            contentValues.put(COLUMN_BIRTHDAY.name, plant.getBirthday().get().toString());
+        }
+
         if (plant.getPhoto().isPresent()) {
             contentValues.put(COLUMN_PHOTO.name, plant.getPhoto().get());
-        } else {
-            contentValues.put(COLUMN_PHOTO.name, "NULL");
         }
     }
 
