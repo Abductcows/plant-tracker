@@ -39,7 +39,7 @@
     <string name="add_plant_interval_hours">Hours</string>
     <string name="add_plant_interval_minutes">Minutes</string>
     <string name="add_plant_watering_interval_label">Water every:</string>
-    <string name="duration_formatter_hours">\"hours\"</string>
+    <string name="duration_formatter_hours">hours</string>
     <string name="duration_formatter_days">days</string>
     <string name="duration_formatter_minutes">minutes</string>
     <string name="add_plant_photo_preview_description">Preview of the plant\'s photo taken</string>

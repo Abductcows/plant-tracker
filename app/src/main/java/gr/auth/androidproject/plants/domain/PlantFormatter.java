@@ -1,6 +1,7 @@
 package gr.auth.androidproject.plants.domain;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -122,6 +123,7 @@ public class PlantFormatter {
      * any zeros
      */
     private String formattedDuration(Duration duration) {
+        Resources strRes = context.getResources();
         StringBuilder builder = new StringBuilder();
 
         long days = duration.toDays();
@@ -130,7 +132,7 @@ public class PlantFormatter {
         if (days != 0) {
             builder.append(days);
             builder.append(' ');
-            builder.append(R.string.duration_formatter_days);
+            builder.append(strRes.getString(R.string.duration_formatter_days));
 
             duration = duration.minusDays(days);
             addLeadingSpace = true;
@@ -143,7 +145,7 @@ public class PlantFormatter {
             }
             builder.append(hours);
             builder.append(' ');
-            builder.append(R.string.duration_formatter_hours);
+            builder.append(strRes.getString(R.string.duration_formatter_hours));
 
             duration = duration.minusHours(hours);
             addLeadingSpace = true;
@@ -156,7 +158,7 @@ public class PlantFormatter {
             }
             builder.append(minutes);
             builder.append(' ');
-            builder.append(R.string.duration_formatter_minutes);
+            builder.append(strRes.getString(R.string.duration_formatter_minutes));
         }
 
         return builder.toString();
