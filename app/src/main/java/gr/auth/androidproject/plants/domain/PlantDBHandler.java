@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -220,7 +221,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     Plant current = new Plant();
 
                     current.setId(cursor.getLong(COLUMN_ID.index)); // ID
-                    current.setName(cursor.getString(COLUMN_ID.index)); // NAME
+                    current.setName(cursor.getString(COLUMN_NAME.index)); // NAME
                     if (Objects.nonNull(cursor.getString(COLUMN_BIRTHDAY.index))) { // BIRTHDAY
                         current.setBirthday(
                                 LocalDateTime.parse(cursor.getString(COLUMN_BIRTHDAY.index))
@@ -229,8 +230,8 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     current.setLastWatered( // LAST_WATERED
                             LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
                     );
-                    current.setLastWatered(
-                            LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
+                    current.setWateringInterval(
+                            Duration.parse(cursor.getString(COLUMN_WATERING_INTERVAL.index))
                     );
                     byte[] compressedImageBytes = cursor.getBlob(COLUMN_PHOTO.index);
                     if (Objects.nonNull(compressedImageBytes)) { // PHOTO
