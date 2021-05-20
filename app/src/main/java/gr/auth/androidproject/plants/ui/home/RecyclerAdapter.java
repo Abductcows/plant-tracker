@@ -1,6 +1,7 @@
 package gr.auth.androidproject.plants.ui.home;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,10 @@ import gr.auth.androidproject.plants.domain.Plant;
 import gr.auth.androidproject.plants.domain.PlantDBHandler;
 import gr.auth.androidproject.plants.domain.PlantFormatter;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private Context context;
-    private PlantFormatter plantFormatter;
     private List<Plant> plants;
-    //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
+//    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
 //            "Chapter Six", "Chapter Seven", "Chapter Eight"};
 //    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
 //    private String[] details = {"Item one details", "Item two details", "Item three details", "Item four details",
@@ -56,7 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     // Class that holds the items to be displayed (Views in card_layout)
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView plantName;
         private TextView age;
         private TextView nextWatering;
@@ -89,14 +89,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
-        plantFormatter = new PlantFormatter(context, plants.get(position));
+        PlantFormatter plantFormatter = new PlantFormatter(context, plants.get(position));
         holder.plantName.setText(plantFormatter.name());
         if (plantFormatter.photo().isPresent())
             holder.plantImage.setImageBitmap(plantFormatter.photo().get());
         if (plantFormatter.birthday().isPresent())
             holder.age.setText(plantFormatter.birthday().get());
         holder.nextWatering.setText(plantFormatter.timeToNextWatering());
-
 
 //        holder.plantName.setText(titles[position]);
 //        holder.plantImage.setImageResource(images[position]);
