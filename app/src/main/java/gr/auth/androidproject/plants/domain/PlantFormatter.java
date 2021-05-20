@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import gr.auth.androidproject.plants.R;
 
@@ -22,6 +23,12 @@ import gr.auth.androidproject.plants.R;
  * <p>
  * It formats all the fields related to a plant and also calculates the time to next watering
  * </p>
+ * <p>
+ * TODO maybe the formatter class should not return optionals but handle
+ *  the absence of the values internally and return a fitting result. Ideas:
+ *  - empty string or (not specified) for birthday
+ *  - default cached Bitmap avatar for no photo
+ *  number 2 is non-trivial and will need to be handled later anyway
  */
 public class PlantFormatter {
 
@@ -91,13 +98,11 @@ public class PlantFormatter {
     }
 
     public Optional<Bitmap> photo() {
-        if (plant.getPhoto().isPresent()) {
-            byte[] blob = plant.getPhoto().get();
-            return Optional.of(
-                    BitmapFactory.decodeByteArray(blob, 0, blob.length)
-            );
-        }
-        return Optional.empty();
+        return Stream.of(plant.getPhoto())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(blob -> BitmapFactory.decodeByteArray(blob, 0, blob.length))
+                .findAny();
     }
 
     private String formattedDateTime(LocalDateTime dateTime) {
