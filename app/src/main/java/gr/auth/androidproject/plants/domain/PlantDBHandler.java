@@ -236,6 +236,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     if (Objects.nonNull(compressedImageBytes)) { // PHOTO
                         current.setPhoto(compressedImageBytes);
                     }
+                    result.add(current);
                 }
                 return result;
             }
