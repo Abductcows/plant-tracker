@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -46,18 +45,14 @@ public class PlantFormatter {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofLocalizedDate(FormatStyle.SHORT); // 5/14/21
 
-    private final Context context;
+    private final Resources resources;
     /**
      * The {@link Plant} object being wrapped
      */
     private final Plant plant;
 
-    public PlantFormatter(Plant plant) {
-        this(null, plant);
-    }
-
     public PlantFormatter(Context context, Plant plant) {
-        this.context = context;
+        this.resources = Objects.requireNonNull(context).getResources();
         this.plant = plant;
     }
 
@@ -71,11 +66,7 @@ public class PlantFormatter {
         Duration timeToNext = PlantUtils.timeToNextWatering(plant);
 
         if (timeToNext.isNegative() || timeToNext.isZero()) {
-            if (Objects.nonNull(context)) {
-                return context.getResources().getString(R.string.formatter_water_now_message);
-            } else {
-                return "0";
-            }
+            return resources.getString(R.string.formatter_water_now_message);
         }
 
         return formattedDuration(timeToNext);
@@ -131,7 +122,6 @@ public class PlantFormatter {
      * any zeros
      */
     private String formattedDuration(Duration duration, TimespanUnits minUnit) {
-        Resources strRes = context.getResources();
         StringBuilder builder = new StringBuilder();
 
         // sort the time durations in descending order (YEAR, MONTH etc)
@@ -160,7 +150,7 @@ public class PlantFormatter {
             if (addLeadingSpace) builder.append(' ');
             builder.append(currentUnitLeft);
             builder.append(' ');
-            builder.append(strRes.getString(
+            builder.append(resources.getString(
                     Objects.requireNonNull(unitToStringRes.get(currentTimespanUnit))
             ));
 

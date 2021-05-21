@@ -37,7 +37,7 @@ public class DetailsFragment extends Fragment {
         int p = getArguments().getInt("position");
         Plant current_plant =
                 Objects.requireNonNull(sharedViewModel.getPlants(context).getValue()).get(p);
-        PlantFormatter plantFormatter = new PlantFormatter(current_plant);
+        PlantFormatter plantFormatter = new PlantFormatter(context, current_plant);
 
         // setting the views to the according values of the selected plant
         TextView name = root.findViewById(R.id.textViewDetails2);
