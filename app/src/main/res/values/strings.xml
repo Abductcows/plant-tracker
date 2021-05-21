@@ -12,7 +12,7 @@
     <string name="menu_add_new">Add new</string>
     <string name="menu_watering_calendar">Watering Calender</string>
 
-    <string name="plant_name">Plant name</string>
+    <string name="plant_name">Plant name:</string>
     <string name="next_watering">Next Watering: </string>
     <string name="age">Age: </string>
     <string name="plant_img_description">Plant image</string>

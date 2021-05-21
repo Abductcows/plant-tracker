@@ -1,6 +1,7 @@
 package gr.auth.androidproject.plants.ui.home;
 
-import android.content.Context;
+
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,31 +19,15 @@ import java.util.List;
 
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
-import gr.auth.androidproject.plants.domain.PlantDBHandler;
 import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-    private List<Plant> plants;
-    //    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
-//            "Chapter Six", "Chapter Seven", "Chapter Eight"};
-//    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
-//    private String[] details = {"Item one details", "Item two details", "Item three details", "Item four details",
-//            "Item file details", "Item six details", "Item seven details", "Item eight details"};
-
-//    private int[] images = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
-//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background };
+    private final List<Plant> plants;
 
     // RecyclerAdapter constructor to pass the context
-    public RecyclerAdapter(Context context) {
-        LocalDateTime birthday = null;
-        LocalDateTime water = null;
-        Duration duration = null;
-        PlantDBHandler plantDBHandler = new PlantDBHandler(context);
-        plants = plantDBHandler.getAllPlants();
-
+    public RecyclerAdapter(List<Plant> p) {
+        plants = p;
         Plant placeHolder = new Plant(
                 "Gyros",
                 LocalDateTime.of(1922, 1, 1, 0, 0),
@@ -55,10 +40,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     // Class that holds the items to be displayed (Views in card_layout)
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView plantName;
-        private TextView age;
-        private TextView nextWatering;
-        private ImageView plantImage;
+        private final TextView plantName;
+        private final TextView age;
+        private final TextView nextWatering;
+        private final ImageView plantImage;
+        private int position;
 
         public ViewHolder(View itemView) {
 
@@ -70,11 +56,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
             // what to do when an item is clicked
             itemView.setOnClickListener(v -> {
-                int position = getAbsoluteAdapterPosition();
-                Snackbar.make(v, "Click detected on item " + position,
-                        Snackbar.LENGTH_LONG).show();
+                position = getAbsoluteAdapterPosition();
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position);
+                Navigation.findNavController(itemView).
+                        navigate(R.id.action_nav_home_to_detailsFragment, bundle);
+//                Snackbar.make(v, "Click detected on item " + position,
+//                        Snackbar.LENGTH_LONG).show();
             });
         }
+
     }
 
     @NonNull
@@ -95,6 +86,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             holder.age.setText(plant.birthday().get());
         holder.nextWatering.setText(plant.timeToNextWatering());
 
+
 //        holder.plantName.setText(titles[position]);
 //        holder.plantImage.setImageResource(images[position]);
 //        holder.age.setText(ages[position]);
@@ -106,3 +98,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return plants.size();
     }
 }
+
+
+//    private String[] titles = {"Chapter One", "Chapter Two", "Chapter Three", "Chapter Four", "Chapter Five",
+//            "Chapter Six", "Chapter Seven", "Chapter Eight"};
+//    private String[] ages = {"1", "2", "3", "4", "5", "6", "7", "8"};
+//    private String[] details = {"Item one details", "Item two details", "Item three details", "Item four details",
+//            "Item file details", "Item six details", "Item seven details", "Item eight details"};
+
+//    private int[] images = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background,
+//            R.drawable.ic_launcher_background, R.drawable.ic_launcher_background }
