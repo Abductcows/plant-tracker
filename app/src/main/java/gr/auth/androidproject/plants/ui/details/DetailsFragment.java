@@ -45,11 +45,9 @@ public class DetailsFragment extends Fragment {
         TextView next_watering = root.findViewById(R.id.textViewDetails4);
         TextView age = root.findViewById(R.id.textViewDetails6);
         name.setText(plantFormatter.name());
-        if (plantFormatter.photo().isPresent())
-            plant_image.setImageBitmap(plantFormatter.photo().get());
+        plant_image.setImageBitmap(plantFormatter.photo());
         next_watering.setText(plantFormatter.timeToNextWatering());
-        if (plantFormatter.birthday().isPresent())
-            age.setText(plantFormatter.birthday().get());
+        age.setText(plantFormatter.age());
 
         // getting the delete button view
         Button delete_button = root.findViewById(R.id.buttonDetails2);

@@ -81,10 +81,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
         PlantFormatter plant = new PlantFormatter(context, plants.get(position));
         holder.plantName.setText(plant.name());
-        if (plant.photo().isPresent())
-            holder.plantImage.setImageBitmap(plant.photo().get());
-        if (plant.birthday().isPresent())
-            holder.age.setText(plant.birthday().get());
+        holder.plantImage.setImageBitmap(plant.photo());
+        holder.age.setText(plant.birthday());
         holder.nextWatering.setText(plant.timeToNextWatering());
 
 //        holder.plantName.setText(titles[position]);

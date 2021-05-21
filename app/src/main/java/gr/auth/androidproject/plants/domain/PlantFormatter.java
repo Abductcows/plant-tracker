@@ -18,9 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import gr.auth.androidproject.plants.R;
 
@@ -32,14 +30,10 @@ import gr.auth.androidproject.plants.R;
  * It formats all the fields related to a plant and also calculates the time to next watering
  * </p>
  * <p>
- * TODO maybe the formatter class should not return optionals but handle
- *  the absence of the values internally and return a fitting result. Ideas:
- *  - empty string or (not specified) for birthday
- *  - default cached Bitmap avatar for no photo
- *  number 2 is non-trivial and will need to be handled later anyway
  */
 public class PlantFormatter {
 
+    private static Bitmap DEFAULT_PHOTO_BITMAP = null;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT); // 5/14/21, 5:59 PM
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
@@ -54,6 +48,10 @@ public class PlantFormatter {
     public PlantFormatter(Context context, Plant plant) {
         this.resources = Objects.requireNonNull(context).getResources();
         this.plant = plant;
+
+        if (Objects.isNull(DEFAULT_PHOTO_BITMAP)) {
+            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_flower);
+        }
     }
 
     /**
@@ -90,13 +88,11 @@ public class PlantFormatter {
         return plant.getName();
     }
 
-    public Optional<String> birthday() {
+    public String birthday() {
         if (plant.getBirthday().isPresent()) {
-            return Optional.of(
-                    formattedDateTime(plant.getBirthday().get())
-            );
+            formattedDateTime(plant.getBirthday().get());
         }
-        return Optional.empty();
+        return resources.getString(R.string.plant_no_age_message);
     }
 
     public String lastWatered() {
@@ -107,12 +103,15 @@ public class PlantFormatter {
         return formattedDuration(plant.getWateringInterval());
     }
 
-    public Optional<Bitmap> photo() {
-        return Stream.of(plant.getPhoto())
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(blob -> BitmapFactory.decodeByteArray(blob, 0, blob.length))
-                .findAny();
+    public Bitmap photo() {
+        if (plant.getPhoto().isPresent()) {
+            byte[] blob = plant.getPhoto().get();
+            Bitmap nullableBitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+            if (Objects.nonNull(nullableBitmap)) { // no parse error
+                return nullableBitmap;
+            }
+        }
+        return PlantFormatter.DEFAULT_PHOTO_BITMAP;
     }
 
     private String formattedDateTime(LocalDateTime dateTime) {
@@ -250,9 +249,8 @@ public class PlantFormatter {
 
 
         builder.append(", birthday = ");
-        Optional<String> birthday = birthday();
-        if (birthday.isPresent()) {
-            builder.append(birthday);
+        if (plant.getBirthday().isPresent()) {
+            builder.append(birthday());
         } else {
             builder.append("null");
         }
@@ -265,7 +263,7 @@ public class PlantFormatter {
 
 
         builder.append(", has_photo = ");
-        builder.append(photo().isPresent());
+        builder.append(plant.getPhoto().isPresent());
 
         return builder.toString();
     }
