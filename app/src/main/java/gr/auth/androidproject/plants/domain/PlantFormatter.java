@@ -72,6 +72,16 @@ public class PlantFormatter {
         return formattedDuration(timeToNext);
     }
 
+    public String age() {
+        Duration age = PlantUtils.calculateAge(plant);
+        if (Objects.nonNull(age)) {
+            // don't care about age in hours or less
+            return formattedDuration(age, TimespanUnits.DAYS);
+        }
+        // else return appropriate message
+        return resources.getString(R.string.plant_no_age_message);
+    }
+
     public long id() {
         return plant.getId();
     }
