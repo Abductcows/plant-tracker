@@ -11,8 +11,16 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gr.auth.androidproject.plants.R;
@@ -115,53 +123,111 @@ public class PlantFormatter {
     }
 
     /**
-     * Formats the Duration object to a app specific standard
+     * Formats the Duration object to an app specific standard
      *
      * @param duration the duration to be formatted
      * @return string formatted representation of the duration
-     * @implSpec This implementation formats the frequency as "D days H hours M minutes", omitting
+     * @implSpec This implementation formats the duration as ".. years .. months .. days .. hours .. minutes", omitting
      * any zeros
      */
-    private String formattedDuration(Duration duration) {
+    private String formattedDuration(Duration duration, TimespanUnits minUnit) {
         Resources strRes = context.getResources();
         StringBuilder builder = new StringBuilder();
 
-        long days = duration.toDays();
-        boolean addLeadingSpace = false;
+        // sort the time durations in descending order (YEAR, MONTH etc)
+        final List<TimespanUnits> timeUnits = Arrays.stream(TimespanUnits.values())
+                .filter(unit -> unit.minutesInThis >= minUnit.minutesInThis) // discard lower than min
+                .sorted(TimespanUnits.descendingOrder) // sort descending
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        if (days != 0) {
-            builder.append(days);
+        // get their display string resources
+        final Map<TimespanUnits, Integer> unitToStringRes = new HashMap<>();
+        unitToStringRes.put(TimespanUnits.YEARS, R.string.duration_formatter_years);
+        unitToStringRes.put(TimespanUnits.MONTHS, R.string.duration_formatter_months);
+        unitToStringRes.put(TimespanUnits.DAYS, R.string.duration_formatter_days);
+        unitToStringRes.put(TimespanUnits.HOURS, R.string.duration_formatter_hours);
+        unitToStringRes.put(TimespanUnits.MINUTES, R.string.duration_formatter_minutes);
+
+        boolean addLeadingSpace = false; // to separate
+        Duration durationLeft = Duration.from(duration);
+
+        for (TimespanUnits currentTimespanUnit : timeUnits) {
+            long durationLeftMinutes = durationLeft.toMinutes();
+            long currentUnitLeft = currentTimespanUnit.fromMinutes(durationLeftMinutes);
+            if (currentUnitLeft == 0) continue; // nothing to add for this unit, continue
+
+            // add the current time unit number and caption
+            if (addLeadingSpace) builder.append(' ');
+            builder.append(currentUnitLeft);
             builder.append(' ');
-            builder.append(strRes.getString(R.string.duration_formatter_days));
+            builder.append(strRes.getString(
+                    Objects.requireNonNull(unitToStringRes.get(currentTimespanUnit))
+            ));
 
-            duration = duration.minusDays(days);
-            addLeadingSpace = true;
-        }
+            // update the duration left to format
+            durationLeft = durationLeft.minusMinutes(
+                    currentTimespanUnit.toMinutes(currentUnitLeft));
 
-        long hours = duration.toHours();
-        if (hours != 0) {
-            if (addLeadingSpace) {
-                builder.append(' ');
+            if (durationLeft.toMinutes() > 0) {
+                // more to come, will need a space in next
+                addLeadingSpace = true;
             }
-            builder.append(hours);
-            builder.append(' ');
-            builder.append(strRes.getString(R.string.duration_formatter_hours));
-
-            duration = duration.minusHours(hours);
-            addLeadingSpace = true;
-        }
-
-        long minutes = duration.toMinutes();
-        if (minutes != 0) {
-            if (addLeadingSpace) {
-                builder.append(' ');
-            }
-            builder.append(minutes);
-            builder.append(' ');
-            builder.append(strRes.getString(R.string.duration_formatter_minutes));
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Version of {@link #formattedDuration(Duration, TimespanUnits)} with no lower bound
+     */
+    private String formattedDuration(Duration duration) {
+        return formattedDuration(duration, TimespanUnits.MINUTES);
+    }
+
+    /**
+     * Handles representation and conversion of time units
+     * <p>
+     * Contains YEARS and MONTHS that are not included in {@link Duration} but not ms, ns etc
+     */
+    private enum TimespanUnits {
+
+        YEARS(525_600), MONTHS(43_805), // assuming 30.42 day months
+        DAYS(1440), HOURS(60), MINUTES(1);
+        static final Comparator<TimespanUnits> descendingOrder = Comparator
+                .comparingLong(TimespanUnits::getMinutesInThis)
+                .reversed();
+
+        /**
+         * Number of minutes in one unit of the respective time unit
+         */
+        private final int minutesInThis;
+
+        TimespanUnits(int numberOfMinutes) {
+            minutesInThis = numberOfMinutes;
+        }
+
+        long fromMinutes(long minutes) {
+            return minutes / minutesInThis;
+        }
+
+        /**
+         * <p>
+         * Converts a value from the scale of {@code this} to minutes.<br>
+         * </p>
+         * <p>
+         * e.g. YEARS.toMinutes(2) will produce the number of minutes in 2 years
+         * </p>
+         *
+         * @param scaledValue value in the scale of this object
+         * @return equivalent value in minutes
+         */
+        long toMinutes(long scaledValue) {
+            return scaledValue * minutesInThis;
+        }
+
+        int getMinutesInThis() {
+            return minutesInThis;
+        }
     }
 
     /**
