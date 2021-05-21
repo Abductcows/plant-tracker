@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
 
         List<Plant> plants = sharedViewModel.getPlants(context).getValue();
         //Set my Adapter for the RecyclerView
-        adapter = new RecyclerAdapter(plants);
+        adapter = new RecyclerAdapter(context, plants);
         recyclerView.setAdapter(adapter);
 
 //        sharedViewModel.getPlants(context).
