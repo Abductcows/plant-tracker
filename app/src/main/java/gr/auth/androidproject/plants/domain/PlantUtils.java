@@ -21,4 +21,20 @@ public class PlantUtils {
         // and subtract the watering interval from it
         return timeSinceLast.minus(plant.getWateringInterval());
     }
+
+
+    /**
+     * Calculates the plant's age using current date/time and the plant's birthday
+     *
+     * @param plant the plant
+     * @return the age of the plant or null if the plant does not have a birthday
+     */
+    public static Duration calculateAge(Plant plant) {
+        if (plant.getBirthday().isPresent()) {
+            return Duration.between(
+                    LocalDateTime.now(), plant.getBirthday().get()
+            );
+        }
+        return null;
+    }
 }
