@@ -15,21 +15,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 import gr.auth.androidproject.plants.R;
+import gr.auth.androidproject.plants.domain.Plant;
+import gr.auth.androidproject.plants.ui.HomeDetailsSharedViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
     FloatingActionButton fab;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        HomeDetailsSharedViewModel sharedViewModel = new ViewModelProvider(requireActivity())
+                .get(HomeDetailsSharedViewModel.class);
 
         Context context = getContext();
 
@@ -39,22 +45,21 @@ public class HomeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
 
+        List<Plant> plants = sharedViewModel.getPlants(context).getValue();
         //Set my Adapter for the RecyclerView
-        adapter = new RecyclerAdapter(context);
+        adapter = new RecyclerAdapter(plants);
         recyclerView.setAdapter(adapter);
 
-
+//        sharedViewModel.getPlants(context).
+//                observe(getViewLifecycleOwner(), (Observer) o -> {
+//
+//                });
 
 
         // setting the floating action button to go to add new page when pressed
         fab = root.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(
-                new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_add_new);
-                    }
-                }
+                v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_nav_add_new)
         );
 
 
