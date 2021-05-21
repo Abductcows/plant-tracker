@@ -16,7 +16,7 @@ public class PlantUtils {
      */
     public static Duration timeToNextWatering(Plant plant) {
         // get time elapsed since last watering
-        Duration timeSinceLast = Duration.between(LocalDateTime.now(), plant.getLastWatered());
+        Duration timeSinceLast = Duration.between(plant.getLastWatered(), LocalDateTime.now());
 
         // and subtract the watering interval from it
         return timeSinceLast.minus(plant.getWateringInterval());
@@ -32,7 +32,7 @@ public class PlantUtils {
     public static Duration calculateAge(Plant plant) {
         if (plant.getBirthday().isPresent()) {
             return Duration.between(
-                    LocalDateTime.now(), plant.getBirthday().get()
+                    plant.getBirthday().get(), LocalDateTime.now()
             );
         }
         return null;
