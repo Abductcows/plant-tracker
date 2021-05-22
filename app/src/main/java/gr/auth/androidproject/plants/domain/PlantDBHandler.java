@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,16 +190,16 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      * @param contentValues the contentValues
      */
     private void putNonIds(Plant plant, ContentValues contentValues) {
-        contentValues.put(COLUMN_NAME.name, plant.getName());
-        contentValues.put(COLUMN_BIRTHDAY.name,
-                plant.getBirthday().isPresent() ? plant.getBirthday().get().toString() : "NULL");
+        contentValues.put(COLUMN_NAME.name, Objects.requireNonNull(plant.getName()));
         contentValues.put(COLUMN_LAST_WATERED.name, plant.getLastWatered().toString());
         contentValues.put(COLUMN_WATERING_INTERVAL.name, plant.getWateringInterval().toString());
-        // if is necessary for photo because of different types
+
+        if (plant.getBirthday().isPresent()) {
+            contentValues.put(COLUMN_BIRTHDAY.name, plant.getBirthday().get().toString());
+        }
+
         if (plant.getPhoto().isPresent()) {
             contentValues.put(COLUMN_PHOTO.name, plant.getPhoto().get());
-        } else {
-            contentValues.put(COLUMN_PHOTO.name, "NULL");
         }
     }
 
@@ -220,8 +221,8 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     Plant current = new Plant();
 
                     current.setId(cursor.getLong(COLUMN_ID.index)); // ID
-                    current.setName(cursor.getString(COLUMN_ID.index)); // NAME
-                    if (!cursor.getString(COLUMN_BIRTHDAY.index).equals("NULL")) { // BIRTHDAY
+                    current.setName(cursor.getString(COLUMN_NAME.index)); // NAME
+                    if (Objects.nonNull(cursor.getString(COLUMN_BIRTHDAY.index))) { // BIRTHDAY
                         current.setBirthday(
                                 LocalDateTime.parse(cursor.getString(COLUMN_BIRTHDAY.index))
                         );
@@ -229,13 +230,14 @@ public class PlantDBHandler extends SQLiteOpenHelper {
                     current.setLastWatered( // LAST_WATERED
                             LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
                     );
-                    current.setLastWatered(
-                            LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
+                    current.setWateringInterval(
+                            Duration.parse(cursor.getString(COLUMN_WATERING_INTERVAL.index))
                     );
                     byte[] compressedImageBytes = cursor.getBlob(COLUMN_PHOTO.index);
                     if (Objects.nonNull(compressedImageBytes)) { // PHOTO
                         current.setPhoto(compressedImageBytes);
                     }
+                    result.add(current);
                 }
                 return result;
             }

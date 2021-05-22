@@ -1,5 +1,7 @@
 package gr.auth.androidproject.plants.domain;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -9,7 +11,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import gr.auth.androidproject.plants.R;
 
@@ -20,27 +27,55 @@ import gr.auth.androidproject.plants.R;
  * <p>
  * It formats all the fields related to a plant and also calculates the time to next watering
  * </p>
+ * <p>
  */
 public class PlantFormatter {
 
+    private static Bitmap DEFAULT_PHOTO_BITMAP = null;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT); // 5/14/21, 5:59 PM
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
             .ofLocalizedDate(FormatStyle.SHORT); // 5/14/21
 
+    private final Resources resources;
     /**
      * The {@link Plant} object being wrapped
      */
     private final Plant plant;
 
-
-    public PlantFormatter(Plant plant) {
+    public PlantFormatter(Context context, Plant plant) {
+        this.resources = Objects.requireNonNull(context).getResources();
         this.plant = plant;
+
+        if (Objects.isNull(DEFAULT_PHOTO_BITMAP)) {
+            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_flower);
+        }
     }
 
+    /**
+     * Checks if time elapsed between now and last watering is greater than the watering interval
+     * and returns the appropriate message
+     *
+     * @return string message informing the user of when to water the plant
+     */
     public String timeToNextWatering() {
-        return formattedDuration(
-                Duration.between(LocalDateTime.now(), plant.getLastWatered()));
+        Duration timeToNext = PlantUtils.timeToNextWatering(plant);
+
+        if (timeToNext.isNegative() || timeToNext.isZero()) {
+            return resources.getString(R.string.formatter_water_now_message);
+        }
+
+        return formattedDuration(timeToNext);
+    }
+
+    public String age() {
+        Duration age = PlantUtils.calculateAge(plant);
+        if (Objects.nonNull(age)) {
+            // don't care about age in hours or less
+            return formattedDuration(age, TimespanUnits.DAYS);
+        }
+        // else return appropriate message
+        return resources.getString(R.string.plant_no_age_message);
     }
 
     public long id() {
@@ -51,13 +86,11 @@ public class PlantFormatter {
         return plant.getName();
     }
 
-    public Optional<String> birthday() {
+    public String birthday() {
         if (plant.getBirthday().isPresent()) {
-            return Optional.of(
-                    formattedDateTime(plant.getBirthday().get())
-            );
+            formattedDateTime(plant.getBirthday().get());
         }
-        return Optional.empty();
+        return resources.getString(R.string.plant_no_age_message);
     }
 
     public String lastWatered() {
@@ -68,14 +101,15 @@ public class PlantFormatter {
         return formattedDuration(plant.getWateringInterval());
     }
 
-    public Optional<Bitmap> photo() {
+    public Bitmap photo() {
         if (plant.getPhoto().isPresent()) {
             byte[] blob = plant.getPhoto().get();
-            return Optional.of(
-                    BitmapFactory.decodeByteArray(blob, 0, blob.length)
-            );
+            Bitmap nullableBitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+            if (Objects.nonNull(nullableBitmap)) { // no parse error
+                return nullableBitmap;
+            }
         }
-        return Optional.empty();
+        return PlantFormatter.DEFAULT_PHOTO_BITMAP;
     }
 
     private String formattedDateTime(LocalDateTime dateTime) {
@@ -87,52 +121,110 @@ public class PlantFormatter {
     }
 
     /**
-     * Formats the Duration object to a app specific standard
+     * Formats the Duration object to an app specific standard
      *
      * @param duration the duration to be formatted
      * @return string formatted representation of the duration
-     * @implSpec This implementation formats the frequency as "D days H hours M minutes", omitting
+     * @implSpec This implementation formats the duration as ".. years .. months .. days .. hours .. minutes", omitting
      * any zeros
      */
+    private String formattedDuration(Duration duration, TimespanUnits minUnit) {
+        StringBuilder result = new StringBuilder();
+
+        // sort the time durations in descending order (YEAR, MONTH etc)
+        final List<TimespanUnits> timeUnits = Arrays.stream(TimespanUnits.values())
+                .filter(unit -> unit.minutesInThis >= minUnit.minutesInThis) // discard lower than min
+                .sorted(TimespanUnits.descendingOrder) // sort descending
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        // get their display string resources
+        final String[] labelsSingular = resources.getStringArray(R.array.duration_formatter_YMDhm_labels_singular);
+        final String[] labelsPlural = resources.getStringArray(R.array.duration_formatter_YMDhm_labels_plural);
+
+        if (labelsSingular.length != labelsPlural.length || labelsSingular.length < timeUnits.size()) {
+            // resource singular-plural matching problem or there are not enough labels
+            throw new IllegalStateException("Label/TimespanUnit matching problem");
+        }
+
+        Duration durationLeft = Duration.from(duration);
+        boolean addLeadingSpace = false; // to separate next from previous value
+
+        for (int i = 0; i < timeUnits.size(); i++) {
+            TimespanUnits currentTimespanUnit = timeUnits.get(i);
+            long durationLeftMinutes = durationLeft.toMinutes();
+            long currentUnitsLeft = currentTimespanUnit.fromMinutes(durationLeftMinutes);
+            if (currentUnitsLeft == 0) continue; // nothing to add for this unit, continue
+
+            // add the current time unit number and caption
+            if (addLeadingSpace) result.append(' ');
+            result.append(currentUnitsLeft);
+            result.append(' ');
+            result.append(currentUnitsLeft == 1 ? labelsSingular[i] : labelsPlural[i]);
+
+            // update the duration left
+            durationLeft = durationLeft.minusMinutes(
+                    currentTimespanUnit.toMinutes(currentUnitsLeft));
+
+            if (durationLeft.toMinutes() <= 0) {
+                break;
+            }
+            addLeadingSpace = true;
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * Version of {@link #formattedDuration(Duration, TimespanUnits)} with no lower bound
+     */
     private String formattedDuration(Duration duration) {
-        StringBuilder builder = new StringBuilder();
+        return formattedDuration(duration, TimespanUnits.MINUTES);
+    }
 
-        long days = duration.toDays();
-        boolean addLeadingSpace = false;
+    /**
+     * Handles representation and conversion of time units
+     * <p>
+     * Contains YEARS and MONTHS that are not included in {@link Duration} but not ms, ns etc
+     */
+    private enum TimespanUnits {
 
-        if (days != 0) {
-            builder.append(days);
-            builder.append(' ');
-            builder.append(R.string.duration_formatter_days);
+        YEARS(525_600), MONTHS(43_805), // assuming 30.42 day months
+        DAYS(1440), HOURS(60), MINUTES(1);
+        static final Comparator<TimespanUnits> descendingOrder = Comparator
+                .comparingLong(TimespanUnits::getMinutesInThis)
+                .reversed();
 
-            duration = duration.minusDays(days);
-            addLeadingSpace = true;
+        /**
+         * Number of minutes in one unit of the respective time unit
+         */
+        private final int minutesInThis;
+
+        TimespanUnits(int numberOfMinutes) {
+            minutesInThis = numberOfMinutes;
         }
 
-        long hours = duration.toHours();
-        if (hours != 0) {
-            if (addLeadingSpace) {
-                builder.append(' ');
-            }
-            builder.append(hours);
-            builder.append(' ');
-            builder.append(R.string.duration_formatter_hours);
-
-            duration = duration.minusHours(hours);
-            addLeadingSpace = true;
+        long fromMinutes(long minutes) {
+            return minutes / minutesInThis;
         }
 
-        long minutes = duration.toMinutes();
-        if (minutes != 0) {
-            if (addLeadingSpace) {
-                builder.append(' ');
-            }
-            builder.append(minutes);
-            builder.append(' ');
-            builder.append(R.string.duration_formatter_minutes);
+        /**
+         * <p>
+         * Converts a value from the scale of {@code this} to minutes.<br>
+         * </p>
+         * <p>
+         * e.g. YEARS.toMinutes(2) will produce the number of minutes in 2 years
+         * </p>
+         *
+         * @param scaledValue value in the scale of this object
+         * @return equivalent value in minutes
+         */
+        long toMinutes(long scaledValue) {
+            return scaledValue * minutesInThis;
         }
 
-        return builder.toString();
+        int getMinutesInThis() {
+            return minutesInThis;
+        }
     }
 
     /**
@@ -155,9 +247,8 @@ public class PlantFormatter {
 
 
         builder.append(", birthday = ");
-        Optional<String> birthday = birthday();
-        if (birthday.isPresent()) {
-            builder.append(birthday);
+        if (plant.getBirthday().isPresent()) {
+            builder.append(birthday());
         } else {
             builder.append("null");
         }
@@ -170,7 +261,7 @@ public class PlantFormatter {
 
 
         builder.append(", has_photo = ");
-        builder.append(photo().isPresent());
+        builder.append(plant.getPhoto().isPresent());
 
         return builder.toString();
     }

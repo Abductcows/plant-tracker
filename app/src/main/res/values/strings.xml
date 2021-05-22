@@ -12,7 +12,7 @@
     <string name="menu_add_new">Add new</string>
     <string name="menu_watering_calendar">Watering Calender</string>
 
-    <string name="plant_name">Plant name</string>
+    <string name="plant_name">Plant name:</string>
     <string name="next_watering">Next Watering: </string>
     <string name="age">Age: </string>
     <string name="plant_img_description">Plant image</string>
@@ -39,9 +39,22 @@
     <string name="add_plant_interval_hours">Hours</string>
     <string name="add_plant_interval_minutes">Minutes</string>
     <string name="add_plant_watering_interval_label">Water every:</string>
-    <string name="duration_formatter_hours">\"hours\"</string>
-    <string name="duration_formatter_days">days</string>
-    <string name="duration_formatter_minutes">minutes</string>
+    <string name="plant_no_age_message">No birthday specified </string>
+
+    <string-array name="duration_formatter_YMDhm_labels_singular">
+        <item>year</item>
+        <item>month</item>
+        <item>day</item>
+        <item>hour</item>
+        <item>minute</item>
+    </string-array>
+    <string-array name="duration_formatter_YMDhm_labels_plural">
+        <item>years</item>
+        <item>months</item>
+        <item>days</item>
+        <item>hours</item>
+        <item>minutes</item>
+    </string-array>
     <string name="add_plant_photo_preview_description">Preview of the plant\'s photo taken</string>
 
     <string name="string_about">This is a project created by Giorgos Bouroutzoglou, Giorgos Michail and Dimitrios Dimos.</string>
@@ -52,4 +65,5 @@
     <string name="days">days</string>
     <string name="submit">Submit</string>
     <string name="name">Name</string>
+    <string name="formatter_water_now_message">WATER NOW</string>
 </resources>
