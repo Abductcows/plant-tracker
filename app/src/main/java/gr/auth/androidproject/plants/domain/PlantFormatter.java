@@ -14,9 +14,7 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -131,7 +129,7 @@ public class PlantFormatter {
      * any zeros
      */
     private String formattedDuration(Duration duration, TimespanUnits minUnit) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
         // sort the time durations in descending order (YEAR, MONTH etc)
         final List<TimespanUnits> timeUnits = Arrays.stream(TimespanUnits.values())
@@ -140,40 +138,40 @@ public class PlantFormatter {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // get their display string resources
-        final Map<TimespanUnits, Integer> unitToStringRes = new HashMap<>();
-        unitToStringRes.put(TimespanUnits.YEARS, R.string.duration_formatter_years);
-        unitToStringRes.put(TimespanUnits.MONTHS, R.string.duration_formatter_months);
-        unitToStringRes.put(TimespanUnits.DAYS, R.string.duration_formatter_days);
-        unitToStringRes.put(TimespanUnits.HOURS, R.string.duration_formatter_hours);
-        unitToStringRes.put(TimespanUnits.MINUTES, R.string.duration_formatter_minutes);
+        final String[] labelsSingular = resources.getStringArray(R.array.duration_formatter_YMDhm_labels_singular);
+        final String[] labelsPlural = resources.getStringArray(R.array.duration_formatter_YMDhm_labels_plural);
 
-        boolean addLeadingSpace = false; // to separate
-        Duration durationLeft = Duration.from(duration);
-
-        for (TimespanUnits currentTimespanUnit : timeUnits) {
-            long durationLeftMinutes = durationLeft.toMinutes();
-            long currentUnitLeft = currentTimespanUnit.fromMinutes(durationLeftMinutes);
-            if (currentUnitLeft == 0) continue; // nothing to add for this unit, continue
-
-            // add the current time unit number and caption
-            if (addLeadingSpace) builder.append(' ');
-            builder.append(currentUnitLeft);
-            builder.append(' ');
-            builder.append(resources.getString(
-                    Objects.requireNonNull(unitToStringRes.get(currentTimespanUnit))
-            ));
-
-            // update the duration left to format
-            durationLeft = durationLeft.minusMinutes(
-                    currentTimespanUnit.toMinutes(currentUnitLeft));
-
-            if (durationLeft.toMinutes() > 0) {
-                // more to come, will need a space in next
-                addLeadingSpace = true;
-            }
+        if (labelsSingular.length != labelsPlural.length || labelsSingular.length < timeUnits.size()) {
+            // resource singular-plural matching problem or there are not enough labels
+            throw new IllegalStateException("Label/TimespanUnit matching problem");
         }
 
-        return builder.toString();
+        Duration durationLeft = Duration.from(duration);
+        boolean addLeadingSpace = false; // to separate next from previous value
+
+        for (int i = 0; i < timeUnits.size(); i++) {
+            TimespanUnits currentTimespanUnit = timeUnits.get(i);
+            long durationLeftMinutes = durationLeft.toMinutes();
+            long currentUnitsLeft = currentTimespanUnit.fromMinutes(durationLeftMinutes);
+            if (currentUnitsLeft == 0) continue; // nothing to add for this unit, continue
+
+            // add the current time unit number and caption
+            if (addLeadingSpace) result.append(' ');
+            result.append(currentUnitsLeft);
+            result.append(' ');
+            result.append(currentUnitsLeft == 1 ? labelsSingular[i] : labelsPlural[i]);
+
+            // update the duration left
+            durationLeft = durationLeft.minusMinutes(
+                    currentTimespanUnit.toMinutes(currentUnitsLeft));
+
+            if (durationLeft.toMinutes() <= 0) {
+                break;
+            }
+            addLeadingSpace = true;
+        }
+
+        return result.toString();
     }
 
     /**
