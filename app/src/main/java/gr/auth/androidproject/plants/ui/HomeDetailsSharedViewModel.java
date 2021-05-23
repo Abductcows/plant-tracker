@@ -17,9 +17,8 @@ public class HomeDetailsSharedViewModel extends ViewModel {
     public LiveData<List<Plant>> getPlants(Context context) {
         if (plants == null) {
             plants = new MutableLiveData<>();
-            loadPlants(context);
         }
-
+        loadPlants(context);
         return plants;
     }
 

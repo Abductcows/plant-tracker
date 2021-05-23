@@ -30,14 +30,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter(Context context, List<Plant> p) {
         this.context = context;
         plants = p;
-        Plant placeHolder = new Plant(
-                "Gyros",
-                LocalDateTime.of(1922, 1, 1, 0, 0),
-                LocalDateTime.now(),
-                Duration.ofDays(1),
-                null
-        );
-        plants.add(placeHolder);
     }
 
     // Class that holds the items to be displayed (Views in card_layout)
