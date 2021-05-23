@@ -39,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddNewFragment extends Fragment {
 
-    private AddNewViewModel addNewViewModel;
+
     private FloatingActionButton takePhotoButton;
     ImageView photoPreview;
     private EditText nameInput;
@@ -53,9 +53,6 @@ public class AddNewFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        addNewViewModel =
-                new ViewModelProvider(this).get(AddNewViewModel.class);
-
 
         View root = saveViews(inflater, container);
         createTakePhotoButtonListener();
@@ -176,6 +173,9 @@ public class AddNewFragment extends Fragment {
             // insert into the db
             PlantDBHandler handler = new PlantDBHandler(AddNewFragment.this.getActivity());
             handler.addPlant(theNewPlant);
+
+            Toast.makeText(AddNewFragment.this.getActivity(), "Plant saved!", Toast.LENGTH_SHORT).show();
+            createPlantButton.setEnabled(false);
         });
     }
 
