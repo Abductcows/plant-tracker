@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,6 +36,9 @@ import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment that handles the add new plant ui interaction
+ */
 public class AddNewFragment extends Fragment {
 
     private AddNewViewModel addNewViewModel;
@@ -91,7 +93,7 @@ public class AddNewFragment extends Fragment {
     }
 
     /**
-     * Special treatment for the DatePicker used in the birthday selection
+     * Date picker interaction for plant birthday
      */
     private void createBirthdayInputListener() {
         final Calendar cal = Calendar.getInstance();
@@ -202,7 +204,7 @@ public class AddNewFragment extends Fragment {
 
             // hide the button and caption
             takePhotoButton.setVisibility(View.INVISIBLE);
-            this.getActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
+            this.requireActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
         }
     }
 }
