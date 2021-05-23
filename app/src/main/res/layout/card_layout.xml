@@ -40,19 +40,19 @@
 
         <TextView
             android:id="@+id/item_age"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/age"
             android:textColor="@color/white"
-            card_view:layout_constraintEnd_toStartOf="@+id/item_age_value"
-            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintEnd_toEndOf="@+id/item_watering"
             card_view:layout_constraintStart_toEndOf="@+id/item_image"
             card_view:layout_constraintTop_toBottomOf="@+id/item_title" />
 
         <TextView
             android:id="@+id/item_age_value"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/date_format1"
             android:textColor="@color/white"
@@ -65,6 +65,7 @@
             android:id="@+id/item_watering"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/next_watering"
             android:textColor="@color/white"
@@ -75,7 +76,7 @@
 
         <TextView
             android:id="@+id/item_watering_value"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/date_format3"
             android:textColor="@color/white"
