@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -51,7 +52,13 @@ public class DetailsFragment extends Fragment {
 
         // getting the delete button view
         Button delete_button = root.findViewById(R.id.buttonDetails2);
-        delete_button.setOnClickListener(v -> sharedViewModel.deletePlant(p, context));
+
+        delete_button.setOnClickListener(v -> {
+            sharedViewModel.deletePlant(p, context);
+            Toast.makeText(context, "Plant deleted!", Toast.LENGTH_SHORT).show();
+            delete_button.setEnabled(false);
+        });
+
         return root;
     }
 

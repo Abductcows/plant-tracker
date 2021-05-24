@@ -48,7 +48,7 @@ public class PlantFormatter {
         this.plant = plant;
 
         if (Objects.isNull(DEFAULT_PHOTO_BITMAP)) {
-            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_flower);
+            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_plant_image);
         }
     }
 

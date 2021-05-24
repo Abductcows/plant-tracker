@@ -42,7 +42,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class AddNewFragment extends Fragment {
 
-    private AddNewViewModel addNewViewModel;
+
     private FloatingActionButton takePhotoButton;
     ImageView photoPreview;
     private EditText nameInput;
@@ -56,9 +56,6 @@ public class AddNewFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        addNewViewModel =
-                new ViewModelProvider(this).get(AddNewViewModel.class);
-
 
         View root = saveViews(inflater, container);
         createTakePhotoButtonListener();
