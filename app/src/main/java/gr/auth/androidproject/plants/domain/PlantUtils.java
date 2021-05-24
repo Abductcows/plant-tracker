@@ -30,11 +30,8 @@ public class PlantUtils {
      * @return the age of the plant or null if the plant does not have a birthday
      */
     public static Duration calculateAge(Plant plant) {
-        if (plant.getBirthday().isPresent()) {
-            return Duration.between(
-                    plant.getBirthday().get(), LocalDateTime.now()
-            );
-        }
-        return null;
+        return plant.getBirthday()
+                .map((birthday -> Duration.between(birthday, LocalDateTime.now())))
+                .orElse(null);
     }
 }
