@@ -28,7 +28,8 @@ public class HomeDetailsSharedViewModel extends ViewModel {
     }
 
     public void deletePlant(int position, Context context) {
+        long id = plants.getValue().get(position).getId();
         PlantDBHandler plantDBHandler = new PlantDBHandler(context);
-        plantDBHandler.removePlant(position);
+        plantDBHandler.removePlant(id);
     }
 }
