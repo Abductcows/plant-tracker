@@ -19,7 +19,7 @@ public class PlantUtils {
         Duration timeSinceLast = Duration.between(plant.getLastWatered(), LocalDateTime.now());
 
         // and subtract the watering interval from it
-        return timeSinceLast.minus(plant.getWateringInterval());
+        return plant.getWateringInterval().minus(timeSinceLast);
     }
 
 
