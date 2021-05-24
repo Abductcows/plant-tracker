@@ -23,7 +23,7 @@
     <string name="date_format1">XX/XX/20XX</string>
     <string name="date_format2">XX/xx</string>
     <string name="date_format3">XX/XX days/months</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setting_fragment">This is the Settings fragment</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
     <string name="add_note_hint">Notes:</string>
