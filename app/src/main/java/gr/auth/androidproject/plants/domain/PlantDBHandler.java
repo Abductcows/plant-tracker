@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +73,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // create the Plant table
-        String createPlantTableQuery =
+        final String createPlantTableQuery =
                 "CREATE TABLE " + TABLE_PLANTS + " (\n" +
                         COLUMN_ID.name + " INTEGER  NOT NULL  ,\n" +
                         COLUMN_NAME.name + " TEXT  NOT NULL  ,\n" +
@@ -172,11 +173,9 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      */
     public boolean removePlant(long id) {
         try (SQLiteDatabase db = this.getWritableDatabase()) {
-
-
             return db.delete(TABLE_PLANTS, COLUMN_ID.name + " = ?",
-                    new String[]{Long.toString(id)})
-                    > 0;
+                    new String[]{Long.toString(id)}) > 0;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,14 +192,8 @@ public class PlantDBHandler extends SQLiteOpenHelper {
         contentValues.put(COLUMN_NAME.name, Objects.requireNonNull(plant.getName()));
         contentValues.put(COLUMN_LAST_WATERED.name, plant.getLastWatered().toString());
         contentValues.put(COLUMN_WATERING_INTERVAL.name, plant.getWateringInterval().toString());
-
-        if (plant.getBirthday().isPresent()) {
-            contentValues.put(COLUMN_BIRTHDAY.name, plant.getBirthday().get().toString());
-        }
-
-        if (plant.getPhoto().isPresent()) {
-            contentValues.put(COLUMN_PHOTO.name, plant.getPhoto().get());
-        }
+        contentValues.put(COLUMN_BIRTHDAY.name, plant.getBirthday().map(Object::toString).orElse(null));
+        contentValues.put(COLUMN_PHOTO.name, plant.getPhoto().orElse(null));
     }
 
     /**
@@ -213,37 +206,42 @@ public class PlantDBHandler extends SQLiteOpenHelper {
         try (SQLiteDatabase db = this.getReadableDatabase()) {
             try (Cursor cursor = db.rawQuery(query, null)) {
                 if (!cursor.moveToFirst()) {
-                    return new ArrayList<>();
+                    return Collections.emptyList();
                 }
                 List<Plant> result = new ArrayList<>(cursor.getCount() + 1);
                 for (; !cursor.isAfterLast(); cursor.moveToNext()) {
-
+                    // create the new object
                     Plant current = new Plant();
-
-                    current.setId(cursor.getLong(COLUMN_ID.index)); // ID
-                    current.setName(cursor.getString(COLUMN_NAME.index)); // NAME
-                    if (Objects.nonNull(cursor.getString(COLUMN_BIRTHDAY.index))) { // BIRTHDAY
-                        current.setBirthday(
-                                LocalDateTime.parse(cursor.getString(COLUMN_BIRTHDAY.index))
-                        );
-                    }
-                    current.setLastWatered( // LAST_WATERED
+                    // id
+                    current.setId(cursor.getLong(COLUMN_ID.index));
+                    // name
+                    current.setName(cursor.getString(COLUMN_NAME.index));
+                    // birthday
+                    current.setBirthday(
+                            Optional.ofNullable(cursor.getString(COLUMN_BIRTHDAY.index))
+                                    .map(LocalDateTime::parse)
+                                    .orElse(null)
+                    );
+                    // last watered
+                    current.setLastWatered(
                             LocalDateTime.parse(cursor.getString(COLUMN_LAST_WATERED.index))
                     );
+                    // watering interval
                     current.setWateringInterval(
                             Duration.parse(cursor.getString(COLUMN_WATERING_INTERVAL.index))
                     );
-                    byte[] compressedImageBytes = cursor.getBlob(COLUMN_PHOTO.index);
-                    if (Objects.nonNull(compressedImageBytes)) { // PHOTO
-                        current.setPhoto(compressedImageBytes);
-                    }
-                    result.add(current);
+                    // photo
+                    current.setPhoto(
+                            Optional.ofNullable(cursor.getBlob(COLUMN_PHOTO.index))
+                                    .orElse(null)
+                    );
+                    result.add(current); // and add it to the result
                 }
                 return result;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 }

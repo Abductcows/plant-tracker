@@ -88,7 +88,7 @@ public class PlantFormatter {
 
     public String birthday() {
         if (plant.getBirthday().isPresent()) {
-            formattedDateTime(plant.getBirthday().get());
+            return formattedDateTime(plant.getBirthday().get());
         }
         return resources.getString(R.string.plant_no_age_message);
     }

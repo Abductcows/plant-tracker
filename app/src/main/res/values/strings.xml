@@ -39,6 +39,9 @@
     <string name="add_plant_interval_hours">Hours</string>
     <string name="add_plant_interval_minutes">Minutes</string>
     <string name="add_plant_watering_interval_label">Water every:</string>
+    <string name="add_plant_no_interval_message">No watering interval provided</string>
+    <string name="add_plant_no_name_message">Name is empty</string>
+    <string name="add_plant_success_message">Plant added successfully</string>
     <string name="plant_no_age_message">No birthday specified </string>
 
     <string-array name="duration_formatter_YMDhm_labels_singular">
