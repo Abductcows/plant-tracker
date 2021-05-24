@@ -72,7 +72,7 @@ public class PlantDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // create the Plant table
-        String createPlantTableQuery =
+        final String createPlantTableQuery =
                 "CREATE TABLE " + TABLE_PLANTS + " (\n" +
                         COLUMN_ID.name + " INTEGER  NOT NULL  ,\n" +
                         COLUMN_NAME.name + " TEXT  NOT NULL  ,\n" +
@@ -172,11 +172,9 @@ public class PlantDBHandler extends SQLiteOpenHelper {
      */
     public boolean removePlant(long id) {
         try (SQLiteDatabase db = this.getWritableDatabase()) {
-
-
             return db.delete(TABLE_PLANTS, COLUMN_ID.name + " = ?",
-                    new String[]{Long.toString(id)})
-                    > 0;
+                    new String[]{Long.toString(id)}) > 0;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
