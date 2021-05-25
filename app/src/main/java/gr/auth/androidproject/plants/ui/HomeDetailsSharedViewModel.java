@@ -38,12 +38,10 @@ public class HomeDetailsSharedViewModel extends ViewModel {
 
     public void waterPlant(int position, Context context) {
         loadPlants(context);
-        long id = Objects.requireNonNull(plants.getValue()).get(position).getId();
+
         PlantDBHandler plantDBHandler = new PlantDBHandler(context);
-        Plant p = null;
-        if (plantDBHandler.getPlantById(id).isPresent())
-            p = plantDBHandler.getPlantById(id).get();
-        assert p != null;
+
+        Plant p = plants.getValue().get(position);
         p.setLastWatered(LocalDateTime.now());
             plantDBHandler.updatePlant(p);
 
