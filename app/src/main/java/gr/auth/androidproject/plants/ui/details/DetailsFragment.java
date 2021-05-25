@@ -35,9 +35,9 @@ public class DetailsFragment extends Fragment {
         Context context = getContext();
 
         assert getArguments() != null;
-        int p = getArguments().getInt("position");
+        int position = getArguments().getInt("position");
         Plant current_plant =
-                Objects.requireNonNull(sharedViewModel.getPlants(context).getValue()).get(p);
+                Objects.requireNonNull(sharedViewModel.getPlants(context).getValue()).get(position);
         PlantFormatter plantFormatter = new PlantFormatter(context, current_plant);
 
         // setting the views to the according values of the selected plant
@@ -53,10 +53,22 @@ public class DetailsFragment extends Fragment {
         // getting the delete button view
         Button delete_button = root.findViewById(R.id.buttonDetails2);
 
+        // getting the just watered button view
+        Button just_watered_button = root.findViewById(R.id.buttonDetails1);
+
         delete_button.setOnClickListener(v -> {
-            sharedViewModel.deletePlant(p, context);
+            sharedViewModel.deletePlant(position, context);
             Toast.makeText(context, "Plant deleted!", Toast.LENGTH_SHORT).show();
             delete_button.setEnabled(false);
+            just_watered_button.setEnabled(false);
+        });
+
+
+
+        just_watered_button.setOnClickListener(v -> {
+            sharedViewModel.waterPlant(position, context);
+            Toast.makeText(context, "Plant watered!", Toast.LENGTH_SHORT).show();
+            just_watered_button.setEnabled(false);
         });
 
         return root;
