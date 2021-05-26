@@ -48,7 +48,7 @@ public class PlantFormatter {
         this.plant = plant;
 
         if (Objects.isNull(DEFAULT_PHOTO_BITMAP)) {
-            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_flower);
+            DEFAULT_PHOTO_BITMAP = BitmapFactory.decodeResource(resources, R.drawable.default_plant_image);
         }
     }
 
@@ -88,7 +88,7 @@ public class PlantFormatter {
 
     public String birthday() {
         if (plant.getBirthday().isPresent()) {
-            formattedDateTime(plant.getBirthday().get());
+            return formattedDateTime(plant.getBirthday().get());
         }
         return resources.getString(R.string.plant_no_age_message);
     }

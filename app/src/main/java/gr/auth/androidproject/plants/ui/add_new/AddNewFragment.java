@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,9 +37,12 @@ import gr.auth.androidproject.plants.domain.PlantFormatter;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment that handles the add new plant ui interaction
+ */
 public class AddNewFragment extends Fragment {
 
-    private AddNewViewModel addNewViewModel;
+
     private FloatingActionButton takePhotoButton;
     ImageView photoPreview;
     private EditText nameInput;
@@ -53,9 +56,6 @@ public class AddNewFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        addNewViewModel =
-                new ViewModelProvider(this).get(AddNewViewModel.class);
-
 
         View root = saveViews(inflater, container);
         createTakePhotoButtonListener();
@@ -91,7 +91,7 @@ public class AddNewFragment extends Fragment {
     }
 
     /**
-     * Special treatment for the DatePicker used in the birthday selection
+     * Date picker interaction for plant birthday
      */
     private void createBirthdayInputListener() {
         final Calendar cal = Calendar.getInstance();
@@ -121,63 +121,78 @@ public class AddNewFragment extends Fragment {
     private void createSavePlantButtonListener() {
 
         createPlantButton.setOnClickListener(v -> {
-            // check for name (required)
-            if (nameInput.getText().toString().isEmpty()) {
-                Toast.makeText(AddNewFragment.this.getActivity(), "Plant name is empty", Toast.LENGTH_SHORT).show();
+            // parse name
+            String name;
+            if (Objects.isNull(name = parseNonEmptyName())) {
+                Snackbar.make(AddNewFragment.this.requireView(),
+                        R.string.add_plant_no_name_message, Snackbar.LENGTH_LONG).show();
                 return;
             }
-            String name = nameInput.getText().toString();
-
+            // parse watering interval
             Duration wateringInterval;
-            // check that some watering interval has been provided
-            {
-                String dayString = wateringIntervalDays.getText().toString();
-                String hourString = wateringIntervalHours.getText().toString();
-                String minuteString = wateringIntervalMinutes.getText().toString();
-                if (dayString.isEmpty()
-                        && hourString.isEmpty()
-                        && minuteString.isEmpty()) {
-                    Toast.makeText(AddNewFragment.this.getActivity(), "No watering interval provided", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int durationInMinutes = 0;
-                try {
-                    if (!dayString.isEmpty()) {
-                        durationInMinutes += 1440 * Integer.parseUnsignedInt(dayString);
-                    }
-                    if (!hourString.isEmpty()) {
-                        durationInMinutes += 60 * Integer.parseUnsignedInt(hourString);
-                    }
-                    if (!minuteString.isEmpty()) {
-                        durationInMinutes += Integer.parseUnsignedInt(minuteString);
-                    }
-                } catch (NumberFormatException e) {
-                    Toast.makeText(AddNewFragment.this.getActivity(), "Invalid watering interval format", Toast.LENGTH_SHORT).show();
-                }
-                wateringInterval = Duration.ofMinutes(durationInMinutes);
+            if (Objects.isNull(wateringInterval = parseNonEmptyDuration())) {
+                Snackbar.make(AddNewFragment.this.requireView(),
+                        R.string.add_plant_no_interval_message, Snackbar.LENGTH_LONG).show();
+                return;
             }
-
-            // TODO maybe add option to set initial last watered time
-            // but it may be too cluttered then
+            // set parsed birthday
+            LocalDateTime birthday = this.birthday;
+            // set last watered
             LocalDateTime lastWatered = LocalDateTime.now();
-
-            byte[] photo = null;
+            // parse photo
+            byte[] photo;
             if (Objects.nonNull(photoBitmap)) {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                 photoBitmap.compress(
                         PlantFormatter.BitmapEncoding.format,
                         PlantFormatter.BitmapEncoding.quality, bytes);
                 photo = bytes.toByteArray();
+            } else {
+                photo = null;
             }
-
             // create the plant object
             Plant theNewPlant = new Plant(name, birthday, lastWatered, wateringInterval, photo);
 
             // insert into the db
             PlantDBHandler handler = new PlantDBHandler(AddNewFragment.this.getActivity());
             handler.addPlant(theNewPlant);
+
+            // go back with a success message
+            Snackbar.make(AddNewFragment.this.requireView(),
+                    R.string.add_plant_success_message, Snackbar.LENGTH_SHORT).show();
+            AddNewFragment.this.requireActivity().onBackPressed();
         });
     }
+
+    private Duration parseNonEmptyDuration() {
+        String dayString = wateringIntervalDays.getText().toString();
+        String hourString = wateringIntervalHours.getText().toString();
+        String minuteString = wateringIntervalMinutes.getText().toString();
+        if (dayString.isEmpty() && hourString.isEmpty() && minuteString.isEmpty()) {
+            return null;
+        }
+        int durationInMinutes = 0;
+        if (!dayString.isEmpty()) {
+            durationInMinutes += 1440 * Integer.parseUnsignedInt(dayString);
+        }
+        if (!hourString.isEmpty()) {
+            durationInMinutes += 60 * Integer.parseUnsignedInt(hourString);
+        }
+        if (!minuteString.isEmpty()) {
+            durationInMinutes += Integer.parseUnsignedInt(minuteString);
+        }
+        return Duration.ofMinutes(durationInMinutes);
+    }
+
+    private String parseNonEmptyName() {
+        String nameString = nameInput.getText().toString();
+        if (nameString.isEmpty()) {
+            return null;
+        }
+        return nameString;
+    }
+
+    // photo related
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -202,7 +217,7 @@ public class AddNewFragment extends Fragment {
 
             // hide the button and caption
             takePhotoButton.setVisibility(View.INVISIBLE);
-            this.getActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
+            this.requireActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
         }
     }
 }
