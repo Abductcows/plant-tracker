@@ -69,4 +69,11 @@
     <string name="submit">Submit</string>
     <string name="name">Name</string>
     <string name="formatter_water_now_message">WATER NOW</string>
+    <string name="details_nav_title">Details</string>
+    <string name="details_just_watered_response">Watered!</string>
+    <string name="details_delete_plant_dialogue">Delete this plant?</string>
+    <string name="details_delete_success_response">Deleted!</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
 </resources>
