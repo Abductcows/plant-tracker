@@ -30,15 +30,12 @@ public class HomeDetailsSharedViewModel extends ViewModel {
     }
 
     public void deletePlant(int position, Context context) {
-        loadPlants(context);
         long id = Objects.requireNonNull(plants.getValue()).get(position).getId();
         PlantDBHandler plantDBHandler = new PlantDBHandler(context);
         plantDBHandler.removePlant(id);
     }
 
     public void waterPlant(int position, Context context) {
-        loadPlants(context);
-
         PlantDBHandler plantDBHandler = new PlantDBHandler(context);
 
         Plant p = plants.getValue().get(position);
