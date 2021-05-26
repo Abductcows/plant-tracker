@@ -63,6 +63,8 @@ public class PlantFormatter {
 
         if (timeToNext.isNegative() || timeToNext.isZero()) {
             return resources.getString(R.string.formatter_water_now_message);
+        } else if (timeToNext.minus(Duration.ofMinutes(1)).isNegative()) {
+            return resources.getString(R.string.time_to_next_under_minute);
         }
 
         return formattedDuration(timeToNext);

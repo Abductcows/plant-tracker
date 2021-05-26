@@ -73,6 +73,7 @@
     <string name="details_just_watered_response">Watered!</string>
     <string name="details_delete_plant_dialogue">Delete this plant?</string>
     <string name="details_delete_success_response">Deleted!</string>
+    <string name="time_to_next_under_minute">Water in a minute</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
 
