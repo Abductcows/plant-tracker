@@ -10,7 +10,8 @@
     <!-- Menu Strings -->
     <string name="menu_home">Home</string>
     <string name="menu_add_new">Add new</string>
-    <string name="menu_watering_calendar">Watering Calender</string>
+    <string name="menu_watering_calendar_title">Calendar</string>
+    <string name="menu_watering_calendar">Watering Calendar</string>
 
     <string name="plant_name">Plant name: </string>
     <string name="next_watering">Next Watering: </string>
