@@ -8,8 +8,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- Menu Strings -->
-    <string name="menu_home">Home</string>
-    <string name="menu_add_new">Add new</string>
+    <string name="menu_home_nav_title">My Collection</string>
+    <string name="menu_add_new">New Plant</string>
     <string name="menu_watering_calendar_title">Calendar</string>
     <string name="menu_watering_calendar">Watering Calendar</string>
 
