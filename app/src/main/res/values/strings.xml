@@ -44,6 +44,7 @@
     <string name="add_plant_no_name_message">Name is empty</string>
     <string name="add_plant_success_message">Plant added successfully</string>
     <string name="plant_no_age_message">No birthday :(</string>
+    <string name="plant_very_young_message">Newborn</string>
 
     <string-array name="duration_formatter_YMDhm_labels_singular">
         <item>year</item>

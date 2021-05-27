@@ -70,14 +70,27 @@ public class PlantFormatter {
         return formattedDuration(timeToNext);
     }
 
+    /**
+     * Returns a formatted string displaying the plant's age
+     *
+     * @return the plants age in a human readable format
+     * @implSpec this implementation displays the plant's age with precision of days
+     */
     public String age() {
         Duration age = PlantUtils.calculateAge(plant);
-        if (Objects.nonNull(age)) {
-            // don't care about age in hours or less
-            return formattedDuration(age, TimespanUnits.DAYS);
+        if (Objects.isNull(age)) {
+            // return appropriate message if no age
+            return resources.getString(R.string.plant_no_age_message);
+
         }
-        // else return appropriate message
-        return resources.getString(R.string.plant_no_age_message);
+
+        if (age.minusDays(1).minusSeconds(1).isNegative()) {
+            // plant is less than one day old
+            return resources.getString(R.string.plant_very_young_message);
+        }
+
+        // don't care about age in hours or less
+        return formattedDuration(age, TimespanUnits.DAYS);
     }
 
     public long id() {
