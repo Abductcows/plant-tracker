@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     FloatingActionButton fab;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    RecyclerView.Adapter<RecyclerAdapter.ViewHolder> adapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
