@@ -10,7 +10,8 @@
     <!-- Menu Strings -->
     <string name="menu_home">Home</string>
     <string name="menu_add_new">Add new</string>
-    <string name="menu_watering_calendar">Watering Calender</string>
+    <string name="menu_watering_calendar_title">Calendar</string>
+    <string name="menu_watering_calendar">Watering Calendar</string>
 
     <string name="plant_name">Plant name: </string>
     <string name="next_watering">Next Watering: </string>
@@ -42,7 +43,7 @@
     <string name="add_plant_no_interval_message">No watering interval provided</string>
     <string name="add_plant_no_name_message">Name is empty</string>
     <string name="add_plant_success_message">Plant added successfully</string>
-    <string name="plant_no_age_message">No birthday specified </string>
+    <string name="plant_no_age_message">No birthday :(</string>
 
     <string-array name="duration_formatter_YMDhm_labels_singular">
         <item>year</item>
@@ -68,5 +69,13 @@
     <string name="days">days</string>
     <string name="submit">Submit</string>
     <string name="name">Name</string>
-    <string name="formatter_water_now_message">WATER NOW</string>
+    <string name="formatter_water_now_message">Water now</string>
+    <string name="details_nav_title">Details</string>
+    <string name="details_just_watered_response">Watered!</string>
+    <string name="details_delete_plant_dialogue">Delete this plant?</string>
+    <string name="details_delete_success_response">Deleted!</string>
+    <string name="time_to_next_under_minute">Water in a minute</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
 </resources>

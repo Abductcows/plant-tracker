@@ -1,21 +1,21 @@
 package gr.auth.androidproject.plants.ui.details;
 
-import androidx.lifecycle.ViewModelProvider;
-
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
@@ -56,22 +56,37 @@ public class DetailsFragment extends Fragment {
         // getting the just watered button view
         Button just_watered_button = root.findViewById(R.id.buttonDetails1);
 
-        delete_button.setOnClickListener(v -> {
-            sharedViewModel.deletePlant(position, context);
-            Toast.makeText(context, "Plant deleted!", Toast.LENGTH_SHORT).show();
-            delete_button.setEnabled(false);
-            just_watered_button.setEnabled(false);
-        });
-
-
+        delete_button.setOnClickListener(v ->
+                deleteWithConfirmation(
+                        context, sharedViewModel, position, delete_button, just_watered_button));
 
         just_watered_button.setOnClickListener(v -> {
             sharedViewModel.waterPlant(position, context);
-            Toast.makeText(context, "Plant watered!", Toast.LENGTH_SHORT).show();
+            next_watering.setText(plantFormatter.timeToNextWatering());
+            Snackbar.make(this.requireView(), R.string.details_just_watered_response,
+                    Snackbar.LENGTH_SHORT).show();
             just_watered_button.setEnabled(false);
         });
 
         return root;
+    }
+
+    private void deleteWithConfirmation(Context context, HomeDetailsSharedViewModel sharedViewModel,
+                                        int position,
+                                        Button delete_button, Button just_watered_button) {
+        new AlertDialog.Builder(this.requireActivity())
+                .setMessage(R.string.details_delete_plant_dialogue)
+                .setPositiveButton(R.string.yes, (d, w) -> {
+                    // do the delete
+                    sharedViewModel.deletePlant(position, context);
+                    Snackbar.make(this.requireView(), R.string.details_delete_success_response,
+                            Snackbar.LENGTH_SHORT).show();
+                    delete_button.setEnabled(false);
+                    just_watered_button.setEnabled(false);
+                })
+                .setNegativeButton(R.string.no, (d, w) -> { // do not delete
+                })
+                .show();
     }
 
 //    @Override

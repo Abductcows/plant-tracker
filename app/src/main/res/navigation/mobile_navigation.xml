@@ -45,11 +45,11 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="gr.auth.androidproject.plants.ui.details.DetailsFragment"
-        android:label="details_fragment"
-        tools:layout="@layout/fragment_details" >
+        android:label="@string/details_nav_title"
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="position"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class WateringCalendarViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public WateringCalendarViewModel() {
         mText = new MutableLiveData<>();

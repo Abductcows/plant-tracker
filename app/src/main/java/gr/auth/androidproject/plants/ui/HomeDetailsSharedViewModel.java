@@ -40,7 +40,7 @@ public class HomeDetailsSharedViewModel extends ViewModel {
 
         Plant p = plants.getValue().get(position);
         p.setLastWatered(LocalDateTime.now());
-            plantDBHandler.updatePlant(p);
+        plantDBHandler.updatePlant(p);
 
     }
 }

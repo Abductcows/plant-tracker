@@ -58,6 +58,9 @@ public class AddNewFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = saveViews(inflater, container);
+        if (Objects.nonNull(savedInstanceState)) {
+            birthday = (LocalDateTime) savedInstanceState.getSerializable("birthday");
+        }
         createTakePhotoButtonListener();
         createBirthdayInputListener();
         createSavePlantButtonListener();
@@ -218,6 +221,16 @@ public class AddNewFragment extends Fragment {
             // hide the button and caption
             takePhotoButton.setVisibility(View.INVISIBLE);
             this.requireActivity().findViewById(R.id.takePhotoCaption).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save birthday
+        if (Objects.nonNull(birthday)) {
+            outState.putSerializable("birthday", birthday);
         }
     }
 }
