@@ -22,6 +22,7 @@
             android:hint="@string/add_plant_editText_name"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
+            android:maxLength="28"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonTakePlantPhoto" />
 
@@ -60,6 +61,7 @@
             android:hint="@string/add_plant_interval_days"
             android:importantForAutofill="no"
             android:inputType="number"
+            android:maxLength="3"
             android:nextFocusRight="@id/editTextWateringIntervalHours"
             app:layout_constraintStart_toStartOf="@+id/wateringInterval"
             app:layout_constraintTop_toBottomOf="@+id/wateringInterval" />
@@ -75,6 +77,7 @@
             android:importantForAutofill="no"
             android:inputType="number"
 
+            android:maxLength="2"
             android:nextFocusRight="@id/editTextWateringIntervalMinutes"
             app:layout_constraintStart_toEndOf="@+id/editTextWateringIntervalDays"
             app:layout_constraintTop_toTopOf="@+id/editTextWateringIntervalDays" />
@@ -88,6 +91,7 @@
             android:hint="@string/add_plant_interval_minutes"
             android:importantForAutofill="no"
             android:inputType="number"
+            android:maxLength="2"
             app:layout_constraintStart_toEndOf="@+id/editTextWateringIntervalHours"
             app:layout_constraintTop_toTopOf="@+id/editTextWateringIntervalHours" />
 
