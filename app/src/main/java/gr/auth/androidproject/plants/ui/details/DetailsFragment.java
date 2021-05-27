@@ -62,6 +62,7 @@ public class DetailsFragment extends Fragment {
 
         just_watered_button.setOnClickListener(v -> {
             sharedViewModel.waterPlant(position, context);
+            next_watering.setText(plantFormatter.timeToNextWatering());
             Snackbar.make(this.requireView(), R.string.details_just_watered_response,
                     Snackbar.LENGTH_SHORT).show();
             just_watered_button.setEnabled(false);
