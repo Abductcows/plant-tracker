@@ -24,7 +24,7 @@
     <string name="date_format1">XX/XX/20XX</string>
     <string name="date_format2">XX/xx</string>
     <string name="date_format3">XX/XX days/months</string>
-    <string name="setting_fragment">This is the Settings fragment</string>
+    <string name="setting_fragment_text">👷 hello, settings will be added when there is something to set</string>
     <string name="floating_button_home_description">button to add new plant</string>
     <string name="search_plant">Search Plant:</string>
     <string name="add_note_hint">Notes:</string>
@@ -62,7 +62,8 @@
     </string-array>
     <string name="add_plant_photo_preview_description">Preview of the plant\'s photo taken</string>
 
-    <string name="string_about">This is a project created by Giorgos Bouroutzoglou, Giorgos Michail and Dimitrios Dimos.</string>
+    <string name="string_about">This is a simple and open source time tracking app. If you want to
+    contribute to this project, visit us on <a href="https://github.com/Abductcows/plant-tracker">our github page</a></string>
     <string name="button_delete">Delete</string>
     <string name="button_watered">Just watered</string>
     <string name="date_planted">Date planted: </string>

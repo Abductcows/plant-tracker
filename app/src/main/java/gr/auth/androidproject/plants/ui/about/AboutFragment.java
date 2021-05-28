@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import gr.auth.androidproject.plants.R;
 
@@ -60,7 +62,14 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        View root = inflater.inflate(R.layout.fragment_about, container, false);
+
+        // create the link for the github page
+        TextView about = root.findViewById(R.id.about_text);
+        about.setMovementMethod(LinkMovementMethod.getInstance());
+
+        return root;
     }
 }
