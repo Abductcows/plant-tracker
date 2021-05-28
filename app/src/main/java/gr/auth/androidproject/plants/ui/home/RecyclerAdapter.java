@@ -17,7 +17,7 @@ import java.util.List;
 
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
-import gr.auth.androidproject.plants.domain.PlantFormatter;
+import gr.auth.androidproject.plants.ui.PlantFormatter;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private final Context context;

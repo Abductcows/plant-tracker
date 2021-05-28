@@ -1,4 +1,4 @@
-package gr.auth.androidproject.plants.domain;
+package gr.auth.androidproject.plants.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,6 +19,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import gr.auth.androidproject.plants.R;
+import gr.auth.androidproject.plants.domain.Plant;
+import gr.auth.androidproject.plants.domain.PlantUtils;
 
 /**
  * <p>

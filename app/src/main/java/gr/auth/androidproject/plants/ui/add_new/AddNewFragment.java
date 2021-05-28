@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,7 +32,7 @@ import java.util.Objects;
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
 import gr.auth.androidproject.plants.domain.PlantDBHandler;
-import gr.auth.androidproject.plants.domain.PlantFormatter;
+import gr.auth.androidproject.plants.ui.PlantFormatter;
 
 import static android.app.Activity.RESULT_OK;
 

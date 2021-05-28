@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import gr.auth.androidproject.plants.R;
 import gr.auth.androidproject.plants.domain.Plant;
-import gr.auth.androidproject.plants.domain.PlantFormatter;
+import gr.auth.androidproject.plants.ui.PlantFormatter;
 import gr.auth.androidproject.plants.ui.HomeDetailsSharedViewModel;
 
 public class DetailsFragment extends Fragment {
